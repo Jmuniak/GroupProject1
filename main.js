@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
     // Get data from UTELY API via RAPID KEY
     let apiUrl = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
@@ -14,7 +14,7 @@ $(function() {
             "x-rapidapi-key": rapidKey
 
         }
-    }).then(function(response) {
+    }).then(function (response) {
 
         let utelyDatas = response.results;
         console.log("------------ Utely --------")
@@ -27,7 +27,7 @@ $(function() {
     let queryURL = "https://www.omdbapi.com/?s=" + movie + "&apikey=trilogy";
 
     $.get(queryURL)
-        .then(function(response) {
+        .then(function (response) {
 
             let omDB = response.Search;
             console.log("------------ OMDB --------")
@@ -49,7 +49,7 @@ $(function() {
         "data": "{}"
     }
 
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
 
         console.log("------------The Movie BD --------")
         console.log(response.results);
@@ -71,7 +71,7 @@ $(function() {
             "x-rapidapi-key": apiKeyIMDB
 
         }
-    }).then(function(response) {
+    }).then(function (response) {
 
         let dataIMDB = response.Search;
         console.log("------------ IMDB --------")
