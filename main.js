@@ -56,4 +56,26 @@ $(function() {
     });
 
 
+    // Get Movie by title 
+
+    let urlHost = "https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&s=";
+    let superHero = "Neo";
+    let hostIMDB = "movie-database-imdb-alternative.p.rapidapi.com";
+    let apiKeyIMDB = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
+
+    $.get({
+        url: urlHost + superHero,
+        dataType: 'json',
+        headers: {
+            "x-rapidapi-host": hostIMDB,
+            "x-rapidapi-key": apiKeyIMDB
+
+        }
+    }).then(function(response) {
+
+        let dataIMDB = response.Search;
+        console.log("------------ IMDB --------")
+        console.log(dataIMDB);
+    });
+
 });
