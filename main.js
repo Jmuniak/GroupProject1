@@ -56,7 +56,7 @@ $(function() {
     });
 
 
-    // Get Movie title with a super hero name
+    // Get Movie by title 
 
     let urlHost = "https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&s=";
     let superHero = "Neo";
