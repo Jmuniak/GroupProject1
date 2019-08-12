@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
 
     /* Click Event
@@ -23,7 +23,7 @@ $(function() {
             "x-rapidapi-key": rapidKey
 
         }
-    }).then(function(response) {
+    }).then(function (response) {
 
         let utelyDatas = response.results;
         console.log("------------ Utely --------")
@@ -36,7 +36,7 @@ $(function() {
     let queryURL = "https://www.omdbapi.com/?s=" + movie + "&apikey=trilogy";
 
     $.get(queryURL)
-        .then(function(response) {
+        .then(function (response) {
 
             let omDB = response.Search;
             console.log("------------ OMDB --------")
@@ -76,7 +76,7 @@ $(function() {
         "data": "{}"
     }
 
-    $.ajax(settings).done(function(response) {
+    $.ajax(settings).done(function (response) {
 
         console.log("------------The Movie BD --------")
         console.log(response.results);
@@ -98,7 +98,7 @@ $(function() {
             "x-rapidapi-key": apiKeyIMDB
 
         }
-    }).then(function(response) {
+    }).then(function (response) {
 
         let dataIMDB = response.Search;
         console.log("------------ IMDB --------")
