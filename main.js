@@ -1,5 +1,14 @@
 $(function() {
 
+
+    /* Click Event
+     ======================================================================= */
+
+
+
+
+
+
     // Get data from UTELY API via RAPID KEY
     let apiUrl = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
     let searchTerm = "avengers";
@@ -36,6 +45,24 @@ $(function() {
         });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Get movie information from The Movie DB
 
     let keyApi = "fa797fcbd4bd5cb308e4eaaae9007e07";
@@ -59,7 +86,7 @@ $(function() {
     // Get Movie by title 
 
     let urlHost = "https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&s=";
-    let superHero = "Neo";
+    let superHero = "Batman";
     let hostIMDB = "movie-database-imdb-alternative.p.rapidapi.com";
     let apiKeyIMDB = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
 
@@ -77,5 +104,9 @@ $(function() {
         console.log("------------ IMDB --------")
         console.log(dataIMDB);
     });
+
+
+
+
 
 });
