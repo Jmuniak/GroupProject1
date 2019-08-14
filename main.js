@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
     let $searchMovie = $("#searchMovie");
     let $utellyResult = $("#utellyResult");
@@ -7,10 +7,39 @@ $(function() {
 
     $resultMessage.hide();
 
+
+    $("#gboxForm").submit(function (event) {
+        event.preventDefault();
+        console.log('submitted the form');
+        let gboxSearch = $("#gboxSearch").val();
+        console.log(gboxSearch);
+        let GBOX_API_KEY = "7cbaa5da2a59678a995910c255de77709361f8bd";
+        // for title search /v2/search?api_key=YOUR_API_KEY&type=movie&field=title&query=Terminator(gboxSearch)
+        // for shows search /v2/search?api_key=YOUR_API_KEY&type=show&field=title&query=Terminator(gboxSearch)
+        // for person search /v2/search?api_key=YOUR_API_KEY&type=person&query=Harrison+Ford
+        // I think we could have the url string broken up to be more dynamic and use only one search field and a if statement.
+        // Cycle down through the options until one of them returns something positive, then run functions from the response data.
+        // It would be a lot easier to use multiple search bars for this part. 
+        // 
+        let gboxTitleSearchURL = "http://api-public.guidebox.com/v2/search?api_key=" + GBOX_API_KEY + "&type=movie&field=title&query=" + gboxSearch;
+        console.log("ajax start");
+        $.get({
+            url: gboxTitleSearchURL,
+            dataType: 'json',
+        })
+            .then(function (response) {
+                console.log(response);
+                let dataGBOX = response.data;
+                console.log("------------ GBOX --------")
+                console.log(dataGBOX);
+            })
+        console.log("ajax done");
+    });
+
     /* Event when the Form is submited
     ======================================================================= */
 
-    $searchMovie.submit(function(event) {
+    $searchMovie.submit(function (event) {
 
         event.preventDefault();
 
@@ -26,8 +55,10 @@ $(function() {
     /* Functions
     ======================================================================= */
 
+
+
     // function to get movie streaming service
-    let utellyApiCall = function(searchTerm) {
+    let utellyApiCall = function (searchTerm) {
 
         let apiUrlUtelly = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
         let rapidHost = "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com";
@@ -42,7 +73,7 @@ $(function() {
                 "x-rapidapi-key": rapidKey
 
             }
-        }).then(function(response) {
+        }).then(function (response) {
 
             let uDatas = response.results;
             console.log("------------ Utely --------")
@@ -79,7 +110,7 @@ $(function() {
 
                     let rDiv = $("<div>");
 
-                    let rLocation = uD.locations.forEach(function(dLoc) {
+                    let rLocation = uD.locations.forEach(function (dLoc) {
 
                         let rPW2W = $("<p>")
                             .html("<b>Where to Watch:</b> " + dLoc.display_name)
@@ -114,41 +145,7 @@ $(function() {
 
     }
 
-    let iMDBApiCall = function(searchTerm) {
 
-
-        let apiUrliMDB = "https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&s=";
-        let hostIMDB = "movie-database-imdb-alternative.p.rapidapi.com";
-        let apiKeyIMDB = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
-
-        $.get({
-            url: apiUrliMDB + searchTerm,
-            dataType: 'json',
-            headers: {
-                "x-rapidapi-host": hostIMDB,
-                "x-rapidapi-key": apiKeyIMDB
-
-            }
-        }).then(function(response) {
-
-            let dataIMDB = response.Search;
-            console.log("------------ IMDB --------")
-            console.log(dataIMDB);
-        });
-    }
-
-    // // Get data from OMD database
-    // let movie = "The Matrix";
-    // let queryURL = "https://www.omdbapi.com/?s=" + movie + "&apikey=trilogy";
-
-    // $.get(queryURL)
-    //     .then(function(response) {
-
-    //         let omDB = response.Search;
-    //         console.log("------------ OMDB --------")
-    //         console.log(omDB);
-
-    //     });
 
 
     // // Get movie information from The Movie DB
