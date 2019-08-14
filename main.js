@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
     let $searchMovie = $("#searchMovie");
     let $utellyResult = $("#utellyResult");
@@ -10,7 +10,7 @@ $(function() {
     /* Event when the Form is submited
     ======================================================================= */
 
-    $searchMovie.submit(function(event) {
+    $searchMovie.submit(function (event) {
 
         event.preventDefault();
 
@@ -27,7 +27,7 @@ $(function() {
     ======================================================================= */
 
     // function to get movie streaming service
-    let utellyApiCall = function(searchTerm) {
+    let utellyApiCall = function (searchTerm) {
 
         let apiUrlUtelly = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
         let rapidHost = "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com";
@@ -42,7 +42,7 @@ $(function() {
                 "x-rapidapi-key": rapidKey
 
             }
-        }).then(function(response) {
+        }).then(function (response) {
 
             let uDatas = response.results;
             console.log("------------ Utely --------")
@@ -79,7 +79,7 @@ $(function() {
 
                     let rDiv = $("<div>");
 
-                    let rLocation = uD.locations.forEach(function(dLoc) {
+                    let rLocation = uD.locations.forEach(function (dLoc) {
 
                         let rPW2W = $("<p>")
                             .html("<b>Where to Watch:</b> " + dLoc.display_name)
@@ -114,7 +114,7 @@ $(function() {
 
     }
 
-    let iMDBApiCall = function(searchTerm) {
+    let iMDBApiCall = function (searchTerm) {
 
 
         let apiUrliMDB = "https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&s=";
@@ -129,7 +129,7 @@ $(function() {
                 "x-rapidapi-key": apiKeyIMDB
 
             }
-        }).then(function(response) {
+        }).then(function (response) {
 
             let dataIMDB = response.Search;
             console.log("------------ IMDB --------")
