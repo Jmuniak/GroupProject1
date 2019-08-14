@@ -1,22 +1,30 @@
 $(function() {
 
-    let $searchUtely = $("#searchUtely");
+    let $searchMovie = $("#searchMovie");
+    let $utellyResult = $("#utellyResult");
+    let $resultMessage = $("#resultMessage");
+    let $resultDiv = $("#resultDiv");
 
-    /* Sub
+    $resultMessage.hide();
+
+    /* Event when the Form is submited
     ======================================================================= */
 
-    $searchUtely.submit(function(event) {
+    $searchMovie.submit(function(event) {
 
         event.preventDefault();
 
-        let $searchInput = $("#utelyInput").val().trim();
+        let $searchInput = $("#searchInput").val().trim();
 
         let searchValue = $searchInput;
-
 
         utellyApiCall(searchValue);
         iMDBApiCall(searchValue);
     })
+
+
+    /* Functions
+    ======================================================================= */
 
     // function to get movie streaming service
     let utellyApiCall = function(searchTerm) {
@@ -36,9 +44,72 @@ $(function() {
             }
         }).then(function(response) {
 
-            let utelyDatas = response.results;
+            let uDatas = response.results;
             console.log("------------ Utely --------")
-            console.log(utelyDatas);
+            console.log(uDatas);
+            $resultDiv.empty();
+
+            if (uDatas.length > 0) {
+
+                $resultMessage.show();
+                $resultMessage.text("Awesome we got some Movie Result!");
+
+                uDatas.forEach(uD => {
+
+                    console.log(uD.picture);
+                    let rCarDiv = $("<div>")
+                        .addClass("card");
+
+                    let rCardDivImg = $("<div>")
+                        .addClass("card-image")
+                        .appendTo(rCarDiv);
+
+                    let rImg = $("<img>")
+                        .attr("src", uD.picture)
+                        .appendTo(rCardDivImg);
+
+                    let rSpanImg = $("<span>")
+                        .addClass("card-title")
+                        .text(uD.name)
+                        .appendTo(rCardDivImg);
+
+                    let rCardContent = $("<div>")
+                        .addClass("card-content")
+                        .appendTo(rCarDiv);
+
+                    let rDiv = $("<div>");
+
+                    let rLocation = uD.locations.forEach(function(dLoc) {
+
+                        let rPW2W = $("<p>")
+                            .html("<b>Where to Watch:</b> " + dLoc.display_name)
+                            .appendTo(rDiv);
+
+                        let rIcon = $("<img>")
+                            .attr("src", dLoc.icon)
+                            .appendTo(rDiv);
+
+                        let rALink = $("<a>")
+                            .attr("href", dLoc.url)
+                            .html("<br>Click here to Watch")
+                            .appendTo(rDiv);
+
+                        //console.log(dLoc.display_name);
+                    });
+
+                    //rLocation.appendTo(rDiv);
+
+                    rDiv.appendTo(rCardContent);
+
+                    rCarDiv.appendTo($resultDiv);
+                });
+
+            } else {
+
+                $resultMessage.show();
+                $resultMessage.text("Sorry no streaming plae available! Check similar Movie!");
+                iMDBApiCall(searchValue);
+            }
         });
 
     }

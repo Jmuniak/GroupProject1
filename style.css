@@ -1,11 +1,5 @@
-/* body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-  }
-
-  main {
-    flex: 1 0 auto;
-  } */
-
-  
+div.card {
+    display: inline-block;
+    margin: .5rem 0.5rem 1rem 0.5rem;
+    width: 250px;
+}
