@@ -4,8 +4,13 @@ $(function() {
     let $utellyResult = $("#utellyResult");
     let $resultMessage = $("#resultMessage");
     let $resultDiv = $("#resultDiv");
+    let $imdbResult = $("#imdbResult");
+    let $resultMessageIMDB = $("#resultMessageIMDB");
+    let $resultDivIMBD = $("#resultDivIMDB");
+    let searchValue = [];
 
     $resultMessage.hide();
+    $resultDivIMBD.hide();
 
     /* Event when the Form is submited
     ======================================================================= */
@@ -16,10 +21,11 @@ $(function() {
 
         let $searchInput = $("#searchInput").val().trim();
 
-        let searchValue = $searchInput;
+        searchValue = [];
+        searchValue.push($searchInput);
 
-        utellyApiCall(searchValue);
-        iMDBApiCall(searchValue);
+        utellyApiCall(searchValue[0]);
+        iMDBApiCall(searchValue[0]);
     })
 
 
@@ -45,8 +51,8 @@ $(function() {
         }).then(function(response) {
 
             let uDatas = response.results;
-            console.log("------------ Utely --------")
-            console.log(uDatas);
+            //console.log("------------ Utely --------")
+
             $resultDiv.empty();
 
             if (uDatas.length > 0) {
@@ -56,7 +62,6 @@ $(function() {
 
                 uDatas.forEach(uD => {
 
-                    console.log(uD.picture);
                     let rCarDiv = $("<div>")
                         .addClass("card");
 
@@ -93,11 +98,7 @@ $(function() {
                             .attr("href", dLoc.url)
                             .html("<br>Click here to Watch")
                             .appendTo(rDiv);
-
-                        //console.log(dLoc.display_name);
                     });
-
-                    //rLocation.appendTo(rDiv);
 
                     rDiv.appendTo(rCardContent);
 
@@ -107,8 +108,8 @@ $(function() {
             } else {
 
                 $resultMessage.show();
-                $resultMessage.text("Sorry no streaming plae available! Check similar Movie!");
-                iMDBApiCall(searchValue);
+                $resultMessage.text("Sorry no streaming placse available! Check similar Movie!");
+                iMDBApiCall(searchValue[0]);
             }
         });
 
@@ -116,7 +117,7 @@ $(function() {
 
     let iMDBApiCall = function(searchTerm) {
 
-
+        console.log("searchT" + searchTerm);
         let apiUrliMDB = "https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&s=";
         let hostIMDB = "movie-database-imdb-alternative.p.rapidapi.com";
         let apiKeyIMDB = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
@@ -131,13 +132,24 @@ $(function() {
             }
         }).then(function(response) {
 
-            let dataIMDB = response.Search;
+            let dataIMDB = response.Response;
             console.log("------------ IMDB --------")
             console.log(dataIMDB);
+
+            $resultDiv.empty();
+
+            if (dataIMDB === "True") {
+
+                $resultMessageIMDB.show();
+                $resultMessageIMDB.text("Here is some simillar movie!");
+                console.log("Got something");
+            } else {
+                console.log("Next time");
+            }
         });
     }
 
-    // // Get data from OMD database
+    // Get data from OMD database
     // let movie = "The Matrix";
     // let queryURL = "https://www.omdbapi.com/?s=" + movie + "&apikey=trilogy";
 
