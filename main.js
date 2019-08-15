@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
 
     let $searchMovie = $("#searchMovie");
     let $utellyResult = $("#utellyResult");
@@ -7,13 +7,14 @@ $(function () {
     let $imdbResult = $("#imdbResult");
     let $resultMessageIMDB = $("#resultMessageIMDB");
     let $resultDivIMBD = $("#resultDivIMDB");
+    let $gBoxResult = $("#gBoxResult");
     let searchValue = [];
 
     $resultMessage.hide();
     $resultDivIMBD.hide();
 
 
-    $("#gboxForm").submit(function (event) {
+    $("#gboxForm").submit(function(event) {
         event.preventDefault();
         console.log('submitted the form');
         let gboxSearch = $("#gboxSearch").val();
@@ -29,123 +30,114 @@ $(function () {
         let gboxTitleSearchURL = "http://api-public.guidebox.com/v2/search?api_key=" + GBOX_API_KEY + "&type=movie&field=title&query=" + gboxSearch;
         console.log("ajax start");
         $.get({
-            url: gboxTitleSearchURL,
-            dataType: 'json',
-        })
-            .then(function (response) {
+                url: gboxTitleSearchURL,
+                dataType: 'json',
+            })
+            .then(function(response) {
                 console.log(response);
-                let dataGBOX = response.data;
+
+                let dataGBOX = response;
+
                 console.log("------------ GBOX --------")
-                console.log(dataGBOX);
+                console.log("datas" + dataGBOX);
+
+                $gBoxResult.empty();
+
+                if (dataGBOX.total_results > 0) {
+
+                    dataGBOX.results.forEach(dGbox => {
+
+                        console.log(dGbox);
+
+                        let divCardH = $("<div>")
+                            .addClass("card horizontal")
+                            .appendTo($gBoxResult);
+
+                        let divImg = $("<div>")
+                            .addClass("card-image")
+                            .appendTo(divCardH);
+
+                        let img = $("<img>")
+                            .attr("src", dGbox.poster_240x342)
+                            .appendTo(divImg);
+
+                        let cardStacked = $("<div>")
+                            .addClass("card-stacked")
+                            .appendTo(divCardH);
+
+                        let cardContent = $("<div>")
+                            .addClass("card-content")
+                            .appendTo(cardStacked);
+
+                        let titleData = $("<p>")
+                            .html(dGbox.title + "<br>" + dGbox.release_year + "<br>" + dGbox.rating)
+                            .appendTo(cardContent);
+
+                        // let cardButton = $("<div")
+                        //     .addClass("card-action")
+
+                        // .appendTo(cardContent);
+
+                        // let buttonDropdown = $("<a>")
+                        //     .addClass("dropdown-trigger btn")
+                        //     .attr({
+                        //         "href": "#",
+                        //         "data-target": "streamingList"
+                        //     })
+                        //     .text("Streaming List!")
+                        //     .appendTo(cardButton);
+
+                        // let streamingList = $("<ul>")
+                        //     .addClass("dropdown-content")
+                        //     .attr("id", "streamingList")
+                        //     .appendTo(buttonDropdown);
+
+                        // let apiUrlUtelly = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
+                        // let rapidHost = "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com";
+                        // let rapidKey = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
+
+                        // $.get({
+                        //     url: apiUrlUtelly + gboxSearch,
+                        //     dataType: 'json',
+                        //     headers: {
+                        //         "x-rapidapi-host": rapidHost,
+                        //         "x-rapidapi-key": rapidKey
+
+                        //     }
+                        // }).then(function(response) {
+
+                        //     let uDatas = response.results;
+                        //     console.log("------------ Utely --------");
+                        //     console.log(uDatas);
+
+                        //     let rLocation = uDatas.locations.forEach(function(dLoc) {
+
+                        //         let streamingListItems = $("<li>")
+                        //             .appendTo(streamingList);
+
+                        //         let linkListItem = $("<a>")
+                        //             .attr("href", dLoc.url)
+                        //             .text(dLoc.display_name)
+                        //             .appendTo(streamingListItems);
+                        //     });
+                        // });
+
+
+                    });
+
+
+                } else {
+                    console.log("No Result!")
+                }
+
+
+
             })
         console.log("ajax done");
     });
 
-    /* Event when the Form is submited
-    ======================================================================= */
-
-    $searchMovie.submit(function (event) {
-
-        event.preventDefault();
-
-        let $searchInput = $("#searchInput").val().trim();
-
-        searchValue = [];
-        searchValue.push($searchInput);
-
-        utellyApiCall(searchValue[0]);
-        iMDBApiCall(searchValue[0]);
-    })
-
-
     /* Functions
     ======================================================================= */
-
-
-
-    // function to get movie streaming service
-    let utellyApiCall = function (searchTerm) {
-
-        let apiUrlUtelly = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
-        let rapidHost = "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com";
-        let rapidKey = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
-
-
-        $.get({
-            url: apiUrlUtelly + searchTerm,
-            dataType: 'json',
-            headers: {
-                "x-rapidapi-host": rapidHost,
-                "x-rapidapi-key": rapidKey
-
-            }
-        }).then(function (response) {
-
-            let uDatas = response.results;
-            //console.log("------------ Utely --------")
-
-            $resultDiv.empty();
-
-            if (uDatas.length > 0) {
-
-                $resultMessage.show();
-                $resultMessage.text("Awesome we got some Movie Result!");
-
-                uDatas.forEach(uD => {
-
-                    let rCarDiv = $("<div>")
-                        .addClass("card");
-
-                    let rCardDivImg = $("<div>")
-                        .addClass("card-image")
-                        .appendTo(rCarDiv);
-
-                    let rImg = $("<img>")
-                        .attr("src", uD.picture)
-                        .appendTo(rCardDivImg);
-
-                    let rSpanImg = $("<span>")
-                        .addClass("card-title")
-                        .text(uD.name)
-                        .appendTo(rCardDivImg);
-
-                    let rCardContent = $("<div>")
-                        .addClass("card-content")
-                        .appendTo(rCarDiv);
-
-                    let rDiv = $("<div>");
-
-                    let rLocation = uD.locations.forEach(function (dLoc) {
-
-                        let rPW2W = $("<p>")
-                            .html("<b>Where to Watch:</b> " + dLoc.display_name)
-                            .appendTo(rDiv);
-
-                        let rIcon = $("<img>")
-                            .attr("src", dLoc.icon)
-                            .appendTo(rDiv);
-
-                        let rALink = $("<a>")
-                            .attr("href", dLoc.url)
-                            .html("<br>Click here to Watch")
-                            .appendTo(rDiv);
-                    });
-
-                    rDiv.appendTo(rCardContent);
-
-                    rCarDiv.appendTo($resultDiv);
-                });
-
-            } else {
-
-                $resultMessage.show();
-                $resultMessage.text("Sorry no streaming placse available! Check similar Movie!");
-                iMDBApiCall(searchValue[0]);
-            }
-        });
-
-    }
-
 
     let iMDBApiCall = function(searchTerm) {
 
