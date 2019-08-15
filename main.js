@@ -73,54 +73,56 @@ $(function() {
                             .html(dGbox.title + "<br>" + dGbox.release_year + "<br>" + dGbox.rating)
                             .appendTo(cardContent);
 
-                        // let cardButton = $("<div")
-                        //     .addClass("card-action")
+                        let cardAction = $("<div>")
+                            .addClass("card-action")
+                            .appendTo(cardContent);
 
-                        // .appendTo(cardContent);
+                        let buttonDropdown = $("<a>")
+                            .addClass("dropdown-trigger btn")
+                            .attr({
+                                "href": "#",
+                                "data-target": "streamingList"
+                            })
+                            .text("Streaming List!")
+                            .appendTo(cardAction);
 
-                        // let buttonDropdown = $("<a>")
-                        //     .addClass("dropdown-trigger btn")
-                        //     .attr({
-                        //         "href": "#",
-                        //         "data-target": "streamingList"
-                        //     })
-                        //     .text("Streaming List!")
-                        //     .appendTo(cardButton);
+                        let streamingList = $("<ul>")
+                            .addClass("dropdown-content")
+                            .attr("id", "streamingList")
+                            .appendTo(buttonDropdown);
 
-                        // let streamingList = $("<ul>")
-                        //     .addClass("dropdown-content")
-                        //     .attr("id", "streamingList")
-                        //     .appendTo(buttonDropdown);
+                        let apiUrlUtelly = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
+                        let rapidHost = "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com";
+                        let rapidKey = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
 
-                        // let apiUrlUtelly = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
-                        // let rapidHost = "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com";
-                        // let rapidKey = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
+                        $.get({
+                            url: apiUrlUtelly + gboxSearch,
+                            dataType: 'json',
+                            headers: {
+                                "x-rapidapi-host": rapidHost,
+                                "x-rapidapi-key": rapidKey
 
-                        // $.get({
-                        //     url: apiUrlUtelly + gboxSearch,
-                        //     dataType: 'json',
-                        //     headers: {
-                        //         "x-rapidapi-host": rapidHost,
-                        //         "x-rapidapi-key": rapidKey
+                            }
+                        }).then(function(response) {
 
-                        //     }
-                        // }).then(function(response) {
+                            let uDatas = response.results;
+                            // console.log("------------ Utely --------");
+                            // console.log(uDatas);
 
-                        //     let uDatas = response.results;
-                        //     console.log("------------ Utely --------");
-                        //     console.log(uDatas);
+                            uDatas.forEach(uD => {
 
-                        //     let rLocation = uDatas.locations.forEach(function(dLoc) {
+                                let rLocation = uD.locations.forEach(function(dLoc) {
 
-                        //         let streamingListItems = $("<li>")
-                        //             .appendTo(streamingList);
+                                    let streamingListItems = $("<li>")
+                                        .appendTo(streamingList);
 
-                        //         let linkListItem = $("<a>")
-                        //             .attr("href", dLoc.url)
-                        //             .text(dLoc.display_name)
-                        //             .appendTo(streamingListItems);
-                        //     });
-                        // });
+                                    let linkListItem = $("<a>")
+                                        .attr("href", dLoc.url)
+                                        .text(dLoc.display_name)
+                                        .appendTo(streamingListItems);
+                                });
+                            });
+                        });
 
 
                     });

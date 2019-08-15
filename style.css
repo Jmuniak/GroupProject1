@@ -1,5 +1,6 @@
 div.card {
     display: inline-block;
     margin: .5rem 0.5rem 1rem 0.5rem;
-    width: 250px;
+    width: 640px;
+    height: 342px;
 }
