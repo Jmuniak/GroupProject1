@@ -56,7 +56,7 @@ $(function() {
                             .appendTo(divRow);
 
                         let divCardH = $("<div>")
-                            .addClass("card horizontal animated slideInLeft")
+                            .addClass("card horizontal animated rollIn")
                             .appendTo(divCol);
 
                         let divImg = $("<div>")
@@ -138,7 +138,7 @@ $(function() {
                             .appendTo(cardContent);
 
                         let buttonDropdown = $("<a>")
-                            .addClass("dropdown-trigger btn")
+                            .addClass("dropdown-trigger btn animated pulse")
                             .attr({
                                 "href": "#",
                                 "data-target": "streamingList"
