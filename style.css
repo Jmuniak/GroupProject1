@@ -9,6 +9,7 @@
 div.card {
     display: inline-block;
     margin: .5rem 0.5rem 1rem 0.5rem;
+    ani
 }
 
 div.rating {
@@ -41,4 +42,23 @@ div p.titleData {
 
 div.card .card-content {
     padding: 15px;
+}
+
+body {
+    background-color: aliceblue;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+     /* Height of the footer */
+}
+
+div.titleBar {
+
+}
+
+.card-content {
+    animation-delay: 2s;
 }
