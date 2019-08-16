@@ -13,6 +13,7 @@ div.card {
 }
 
 div.rating {
+    
     display: inline-block;
     position: absolute;
     padding: 5px;
@@ -51,7 +52,6 @@ body {
 footer {
     position: fixed;
     bottom: 0;
-    height: 250px;
     width: 100%;
      /* Height of the footer */
 }
