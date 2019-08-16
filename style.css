@@ -45,12 +45,13 @@ div.card .card-content {
 }
 
 body {
-    background-color: aliceblue;
+    background-color: seashell;
 }
 
 footer {
     position: fixed;
     bottom: 0;
+    height: 250px;
     width: 100%;
      /* Height of the footer */
 }
@@ -61,5 +62,5 @@ div.titleBar {
 
 .card-content {
     animation-delay: 1s;
-}
+    box-shadow: black
 }
