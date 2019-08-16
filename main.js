@@ -45,16 +45,22 @@ $(function() {
 
                 if (dataGBOX.total_results > 0) {
 
+                    let divRow = $("<div>")
+                        .addClass("row")
+                        .appendTo($gBoxResult);
+
                     dataGBOX.results.forEach(dGbox => {
 
-                        console.log(dGbox);
+                        let divCol = $("<div>")
+                            .addClass("col l4 m12 s12")
+                            .appendTo(divRow);
 
                         let divCardH = $("<div>")
-                            .addClass("card horizontal")
-                            .appendTo($gBoxResult);
+                            .addClass("card horizontal animated rollIn")
+                            .appendTo(divCol);
 
                         let divImg = $("<div>")
-                            .addClass("card-image")
+                            .addClass("card-image animated fadeIn")
                             .appendTo(divCardH);
 
                         let img = $("<img>")
@@ -66,31 +72,87 @@ $(function() {
                             .appendTo(divCardH);
 
                         let cardContent = $("<div>")
-                            .addClass("card-content")
+                            .addClass("card-content animated zoomIn")
                             .appendTo(cardStacked);
 
                         let titleData = $("<p>")
-                            .html(dGbox.title + "<br>" + dGbox.release_year + "<br>" + dGbox.rating)
+                            .addClass("titleData animated fadeIn")
+                            .text(dGbox.title)
                             .appendTo(cardContent);
+
+                        let yearRData = $("<p>")
+                            .html(`Released Year: <b>${dGbox.release_year}</b>`)
+                            .appendTo(cardContent);
+
+                        let inTheatersResult = dGbox.in_theaters;
+                        let inTR;
+
+                        if (inTheatersResult) {
+
+                            inTR = "Yes"
+
+                        } else {
+                            inTR = "No";
+                        }
+
+                        let inTheatersDisplay = $("<p>")
+                            .html(`In Theaters: <b>${inTR}</b>`)
+                            .appendTo(cardContent);
+
+                        let altTContainer = $("<div>")
+                            .addClass("alternateTitle")
+                            .appendTo(cardContent);
+
+                        let altTitle = dGbox.alternate_titles.slice(0, 3);
+
+
+                        if (altTitle.length > 0) {
+
+                            let altT = $("<p>")
+                                .html("<b>Alternate Title</b>")
+                                .appendTo(altTContainer);
+
+                            let ulAltT = $("<ul>")
+                                .appendTo(altTContainer);
+
+                            altTitle.forEach(aT => {
+
+                                let ulListItem = $("<li>")
+                                    .addClass("altT")
+                                    .text(aT)
+                                    .appendTo(ulAltT);
+                            });
+
+                        } else {
+
+                            altTContainer.hide();
+                        }
+
+                        let ratingData = $("<div>")
+                            .addClass("rating")
+                            .text(dGbox.rating)
+                            .appendTo(divCardH);
 
                         let cardAction = $("<div>")
                             .addClass("card-action")
                             .appendTo(cardContent);
 
                         let buttonDropdown = $("<a>")
-                            .addClass("dropdown-trigger btn")
+                            .addClass("dropdown-trigger btn animated pulse")
                             .attr({
                                 "href": "#",
                                 "data-target": "streamingList"
                             })
                             .text("Streaming List!")
-                            .appendTo(cardAction);
+                            .appendTo(cardContent);
 
                         let streamingList = $("<ul>")
                             .addClass("dropdown-content")
                             .attr("id", "streamingList")
-                            .appendTo(buttonDropdown);
+                            .appendTo(cardContent);
 
+
+                        //getting streaming possibility from Utelly
                         let apiUrlUtelly = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
                         let rapidHost = "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com";
                         let rapidKey = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
@@ -137,6 +199,7 @@ $(function() {
             })
         console.log("ajax done");
     });
+
 
     /* Functions
     ======================================================================= */
@@ -233,6 +296,6 @@ $(function() {
 
 
 
-
+    //$('.dropdown-trigger').dropdown();
 
 });
