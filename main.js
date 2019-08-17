@@ -11,6 +11,7 @@ $(function () {
     let $resultMessagegBox = $("#resultMessagegBox");
     let searchValue = [];
     let utDatas = [];
+    let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70";
 
     $resultMessage.hide();
     $resultDivIMBD.hide();
@@ -142,33 +143,20 @@ $(function () {
                             })
                             .appendTo(cardContent);
 
-                        let trailerButton = $("<a>")
+                        let trailerButton = $("<button>")
                             .addClass("waves-effect waves-light btn")
                             .attr({
-                                "id": trailerButton,
-                                "dataValue": dGbox.id
+                                "id": "trailButton",
+                                "data-Value": dGbox.id
                             })
                             .text("Trailer Button!")
                             .appendTo(cardContent);
 
-                        $("#trailerbutton").on("click", function (event) {
-                            let gboxMovieID = $(this).attr(dataValue);
-                            console.log(gboxMovieID);
-                            let gBoxTrailerUrl = "http://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/videos?api_key=" + GBOX_API_KEY + "&limit=1&sources=youtube";
-                            $.get({
-                                url: gBoxTrailerUrl,
-                                dataType: 'json',
-                            }).then(function (mTrailer) {
-                                console.log(mTrailer[0].free_web_sources[0].link);
-                                // also add an if statement for if there is no trailer link for the user to watch.
-                            });
-                        });
-
-
                         let buttonDropdown = $("<button>")
                             .addClass("blue btn animated pulse")
                             .attr({
-                                "id": dGbox.id,
+                                "id": "dropButton",
+                                "dataValue": dGbox.id,
                                 "data-target": dGbox.title
                             })
                             .text("Streaming List!")
@@ -191,17 +179,33 @@ $(function () {
         console.log("ajax done");
     });
 
+    $("body").on("click", "#trailButton", function (event) {
+        event.preventDefault();
+
+        let gboxMovieID = $(this).attr("data-Value");
+        console.log(gboxMovieID);
+        let gBoxTrailerUrl = "http://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/videos?api_key=" + GBOX_API_KEY + "&limit=1&sources=guidebox";
+        $.get({
+            url: gBoxTrailerUrl,
+            dataType: 'json',
+        }).then(function (mTrailer) {
+            console.log(mTrailer);
+            console.log(mTrailer.results[0].free_web_sources[0].link);
+            // add the link in so its watchable. 
+            // also add an if statement for if there is no trailer link for the user to watch.
+        });
+    });
 
 
     // Run when the streaming list button is clicked
 
-    $("body").on("click", ".btn", function (event) {
+    $("body").on("click", "#dropButton", function (event) {
 
         event.preventDefault();
 
         let $_this = $(this);
-        let dataMovieID = $_this.attr("id");
-        let cardA = $(`[id=${dataMovieID}]`);
+        let dataMovieID = $_this.attr("dataValue");
+        let cardA = $(`[dataValue=${dataMovieID}]`);
         let searchMV = $_this.attr("data-target");
         console.log(searchMV);
         cardA.empty();
