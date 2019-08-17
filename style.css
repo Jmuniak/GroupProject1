@@ -48,6 +48,11 @@ div p.redBold {
     font-weight: bold;
 }
 
+div h3 {
+    color: red;
+    text-align: center;
+}
+
 footer {
     text-align: center;
 }

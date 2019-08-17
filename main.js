@@ -8,11 +8,13 @@ $(function() {
     let $resultMessageIMDB = $("#resultMessageIMDB");
     let $resultDivIMBD = $("#resultDivIMDB");
     let $gBoxResult = $("#gBoxResult");
+    let $resultMessagegBox = $("#resultMessagegBox");
     let searchValue = [];
     let utDatas = [];
 
     $resultMessage.hide();
     $resultDivIMBD.hide();
+    $resultMessagegBox.hide();
 
 
     $("#gboxForm").submit(function(event) {
@@ -158,6 +160,10 @@ $(function() {
 
                 } else {
                     console.log("No Result!")
+                    $resultMessagegBox.show()
+                        .text("Please check your spelling and try again!")
+                        .addClass("redBold")
+                        .appendTo($gBoxResult);
                 }
 
 
