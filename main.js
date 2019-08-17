@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
     let $searchMovie = $("#searchMovie");
     let $utellyResult = $("#utellyResult");
@@ -11,20 +11,21 @@ $(function() {
     let $resultMessagegBox = $("#resultMessagegBox");
     let searchValue = [];
     let utDatas = [];
+    let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70";
 
     $resultMessage.hide();
     $resultDivIMBD.hide();
     $resultMessagegBox.hide();
 
 
-    $("#gboxForm").submit(function(event) {
+    $("#gboxForm").submit(function (event) {
         event.preventDefault();
 
         let gboxSearch = $("#gboxSearch").val();
 
         searchValue.push(gboxSearch);
 
-        let GBOX_API_KEY = "7cbaa5da2a59678a995910c255de77709361f8bd";
+        let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70";
         // for title search /v2/search?api_key=YOUR_API_KEY&type=movie&field=title&query=Terminator(gboxSearch)
         // for shows search /v2/search?api_key=YOUR_API_KEY&type=show&field=title&query=Terminator(gboxSearch)
         // for person search /v2/search?api_key=YOUR_API_KEY&type=person&query=Harrison+Ford
@@ -33,17 +34,13 @@ $(function() {
         // It would be a lot easier to use multiple search bars for this part. 
         // 
         let gboxTitleSearchURL = "http://api-public.guidebox.com/v2/search?api_key=" + GBOX_API_KEY + "&type=movie&field=title&query=" + gboxSearch;
-        //console.log("ajax start");
+        console.log("ajax start");
         $.get({
-                url: gboxTitleSearchURL,
-                dataType: 'json',
-            })
-            .then(function(response) {
-                //console.log(response);
-
+            url: gboxTitleSearchURL,
+            dataType: 'json',
+        })
+            .then(function (response) {
                 let dataGBOX = response;
-
-                //console.log("------------ GBOX --------")
                 console.log("datas" + dataGBOX);
 
                 $gBoxResult.empty();
@@ -146,29 +143,24 @@ $(function() {
                             })
                             .appendTo(cardContent);
 
+                        let trailerButton = $("<button>")
+                            .addClass("waves-effect waves-light btn")
+                            .attr({
+                                "id": "trailButton",
+                                "data-Value": dGbox.id
+                            })
+                            .text("Trailer Button!")
+                            .appendTo(cardContent);
+
                         let buttonDropdown = $("<button>")
                             .addClass("blue btn animated pulse")
                             .attr({
-                                "id": dGbox.id,
+                                "id": "dropButton",
+                                "dataValue": dGbox.id,
                                 "data-target": dGbox.title
                             })
                             .text("Streaming List!")
                             .appendTo(cardContent);
-
-                        // watch the trailer 
-                        let movieID = dGbox.id;
-                        let gBoxTrailerUrl = "http://api-public.guidebox.com/v2/movies/" + movieID + "/videos?api_key=" + GBOX_API_KEY + "&limit=1&sources=guidebox";
-                        console.log(movieID);
-                        $.get({
-                            url: gBoxTrailerUrl,
-                            dataType: 'json',
-                        }).then(function(mTrailer) {
-
-                            let movieTDatas = mTrailer;
-
-                            console.log(movieTDatas);
-
-                        });
 
                     });
 
@@ -184,18 +176,36 @@ $(function() {
 
 
             })
-            //console.log("ajax done");
+        console.log("ajax done");
     });
+
+    $("body").on("click", "#trailButton", function (event) {
+        event.preventDefault();
+
+        let gboxMovieID = $(this).attr("data-Value");
+        console.log(gboxMovieID);
+        let gBoxTrailerUrl = "http://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/videos?api_key=" + GBOX_API_KEY + "&limit=1&sources=guidebox";
+        $.get({
+            url: gBoxTrailerUrl,
+            dataType: 'json',
+        }).then(function (mTrailer) {
+            console.log(mTrailer);
+            console.log(mTrailer.results[0].free_web_sources[0].link);
+            // add the link in so its watchable. 
+            // also add an if statement for if there is no trailer link for the user to watch.
+        });
+    });
+
 
     // Run when the streaming list button is clicked
 
-    $("body").on("click", ".btn", function(event) {
+    $("body").on("click", "#dropButton", function (event) {
 
         event.preventDefault();
 
         let $_this = $(this);
-        let dataMovieID = $_this.attr("id");
-        let cardA = $(`[id=${dataMovieID}]`);
+        let dataMovieID = $_this.attr("dataValue");
+        let cardA = $(`[dataValue=${dataMovieID}]`);
         let searchMV = $_this.attr("data-target");
         console.log(searchMV);
         cardA.empty();
@@ -214,7 +224,7 @@ $(function() {
                 "x-rapidapi-key": rapidKey
 
             }
-        }).then(function(response) {
+        }).then(function (response) {
 
             let uDatas = response.results;
 
@@ -224,7 +234,7 @@ $(function() {
 
                 uDatas.forEach(uD => {
 
-                    let rLocation = uD.locations.forEach(function(dLoc) {
+                    let rLocation = uD.locations.forEach(function (dLoc) {
 
                         let rALink = $("<a>")
                             .attr({
@@ -247,115 +257,11 @@ $(function() {
                     .text("Sorry no streaming available! Check similar Movie!")
                     .addClass("redBold")
                     .appendTo(cardA);
-                //iMDBApiCall(searchValue);
             }
 
         });
 
 
     });
-
-
-
-
-    /* Functions
-    ======================================================================= */
-
-
-
-    // Function that get datas from the iMDBA API
-    let iMDBApiCall = function(searchTerm) {
-
-        console.log("searchT" + searchTerm);
-        let apiUrliMDB = "https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&s=";
-        let hostIMDB = "movie-database-imdb-alternative.p.rapidapi.com";
-        let apiKeyIMDB = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
-
-        $.get({
-            url: apiUrliMDB + searchTerm,
-            dataType: 'json',
-            headers: {
-                "x-rapidapi-host": hostIMDB,
-                "x-rapidapi-key": apiKeyIMDB
-
-            }
-        }).then(function(response) {
-
-            let dataIMDB = response.Response;
-            console.log("------------ IMDB --------")
-            console.log(dataIMDB);
-
-            $resultDiv.empty();
-
-            if (dataIMDB === "True") {
-
-                $resultMessageIMDB.show();
-                $resultMessageIMDB.text("Here is some simillar movie!");
-                console.log("Got something");
-            } else {
-                console.log("Next time");
-            }
-        });
-    }
-
-    // Get data from OMD database
-    // let movie = "The Matrix";
-    // let queryURL = "https://www.omdbapi.com/?s=" + movie + "&apikey=trilogy";
-
-    // $.get(queryURL)
-    //     .then(function(response) {
-
-    //         let omDB = response.Search;
-    //         console.log("------------ OMDB --------")
-    //         console.log(omDB);
-
-
-
-
-    // // Get movie information from The Movie DB
-
-    // let keyApi = "fa797fcbd4bd5cb308e4eaaae9007e07";
-
-    // var settings = {
-    //     "async": true,
-    //     "crossDomain": true,
-    //     "url": "https://api.themoviedb.org/3/movie/now_playing?api_key=" + keyApi + "&language=en-US&page=1",
-    //     "method": "GET",
-    //     "headers": {},
-    //     "data": "{}"
-    // }
-
-    // $.ajax(settings).done(function(response) {
-
-    //     console.log("------------The Movie BD --------")
-    //     console.log(response.results);
-    // });
-
-
-    // // Get Movie by title 
-
-    // let urlHost = "https://movie-database-imdb-alternative.p.rapidapi.com/?page=1&s=";
-    // let superHero = "Batman";
-    // let hostIMDB = "movie-database-imdb-alternative.p.rapidapi.com";
-    // let apiKeyIMDB = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
-
-    // $.get({
-    //     url: urlHost + superHero,
-    //     dataType: 'json',
-    //     headers: {
-    //         "x-rapidapi-host": hostIMDB,
-    //         "x-rapidapi-key": apiKeyIMDB
-
-    //     }
-    // }).then(function(response) {
-
-    //     let dataIMDB = response.Search;
-    //     console.log("------------ IMDB --------")
-    //     console.log(dataIMDB);
-    // });
-
-
-
-    //$('.dropdown-trigger').dropdown();
 
 });
