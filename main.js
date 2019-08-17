@@ -44,7 +44,7 @@ $(function() {
                 let dataGBOX = response;
 
                 //console.log("------------ GBOX --------")
-                //console.log("datas" + dataGBOX);
+                console.log("datas" + dataGBOX);
 
                 $gBoxResult.empty();
 
@@ -154,6 +154,21 @@ $(function() {
                             })
                             .text("Streaming List!")
                             .appendTo(cardContent);
+
+                        // watch the trailer 
+                        let movieID = dGbox.id;
+                        let gBoxTrailerUrl = "http://api-public.guidebox.com/v2/movies/" + movieID + "/videos?api_key=" + GBOX_API_KEY + "&limit=1&sources=guidebox";
+                        console.log(movieID);
+                        $.get({
+                            url: gBoxTrailerUrl,
+                            dataType: 'json',
+                        }).then(function(mTrailer) {
+
+                            let movieTDatas = mTrailer;
+
+                            console.log(movieTDatas);
+
+                        });
 
                     });
 
