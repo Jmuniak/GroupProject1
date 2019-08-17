@@ -59,11 +59,11 @@ $(function() {
                             .appendTo(divRow);
 
                         let divCardH = $("<div>")
-                            .addClass("card horizontal")
+                            .addClass("card horizontal animated rollIn")
                             .appendTo(divCol);
 
                         let divImg = $("<div>")
-                            .addClass("card-image")
+                            .addClass("card-image animated fadeIn")
                             .appendTo(divCardH);
 
                         let img = $("<img>")
@@ -75,11 +75,11 @@ $(function() {
                             .appendTo(divCardH);
 
                         let cardContent = $("<div>")
-                            .addClass("card-content")
+                            .addClass("card-content animated zoomIn")
                             .appendTo(cardStacked);
 
                         let titleData = $("<p>")
-                            .addClass("titleData")
+                            .addClass("titleData animated fadeIn")
                             .text(dGbox.title)
                             .appendTo(cardContent);
 
@@ -145,7 +145,7 @@ $(function() {
                             .appendTo(cardContent);
 
                         let buttonDropdown = $("<button>")
-                            .addClass("blue btn")
+                            .addClass("blue btn animated pulse")
                             .attr({
                                 "id": dGbox.id,
                                 "data-target": dGbox.title
