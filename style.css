@@ -9,7 +9,6 @@
 div.card {
     display: inline-block;
     margin: .5rem 0.5rem 1rem 0.5rem;
-    ani
 }
 
 div.rating {
@@ -45,8 +44,9 @@ div.card .card-content {
     padding: 15px;
 }
 
-body {
-    background-color: seashell;
+div p.redBold {
+    color: red;
+    font-weight: bold;
 }
 
 footer {
@@ -56,11 +56,20 @@ footer {
      /* Height of the footer */
 }
 
-div.titleBar {
 
+/* Main Page 
+=========================================== */
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
-.card-content {
-    animation-delay: 1s;
-    box-shadow: black
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    text-align: center;
 }

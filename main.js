@@ -8,17 +8,22 @@ $(function() {
     let $resultMessageIMDB = $("#resultMessageIMDB");
     let $resultDivIMBD = $("#resultDivIMDB");
     let $gBoxResult = $("#gBoxResult");
+    let $resultMessagegBox = $("#resultMessagegBox");
     let searchValue = [];
+    let utDatas = [];
 
     $resultMessage.hide();
     $resultDivIMBD.hide();
+    $resultMessagegBox.hide();
 
 
     $("#gboxForm").submit(function(event) {
         event.preventDefault();
-        console.log('submitted the form');
+
         let gboxSearch = $("#gboxSearch").val();
-        console.log(gboxSearch);
+
+        searchValue.push(gboxSearch);
+
         let GBOX_API_KEY = "7cbaa5da2a59678a995910c255de77709361f8bd";
         // for title search /v2/search?api_key=YOUR_API_KEY&type=movie&field=title&query=Terminator(gboxSearch)
         // for shows search /v2/search?api_key=YOUR_API_KEY&type=show&field=title&query=Terminator(gboxSearch)
@@ -28,18 +33,18 @@ $(function() {
         // It would be a lot easier to use multiple search bars for this part. 
         // 
         let gboxTitleSearchURL = "http://api-public.guidebox.com/v2/search?api_key=" + GBOX_API_KEY + "&type=movie&field=title&query=" + gboxSearch;
-        console.log("ajax start");
+        //console.log("ajax start");
         $.get({
                 url: gboxTitleSearchURL,
                 dataType: 'json',
             })
             .then(function(response) {
-                console.log(response);
+                //console.log(response);
 
                 let dataGBOX = response;
 
-                console.log("------------ GBOX --------")
-                console.log("datas" + dataGBOX);
+                //console.log("------------ GBOX --------")
+                //console.log("datas" + dataGBOX);
 
                 $gBoxResult.empty();
 
@@ -135,75 +140,115 @@ $(function() {
 
                         let cardAction = $("<div>")
                             .addClass("card-action")
+                            .attr({
+                                "id": dGbox.id,
+                                "data-movie": dGbox.title
+                            })
                             .appendTo(cardContent);
 
-                        let buttonDropdown = $("<a>")
-                            .addClass("dropdown-trigger btn animated pulse")
+                        let buttonDropdown = $("<button>")
+                            .addClass("blue btn animated pulse")
                             .attr({
-                                "href": "#",
-                                "data-target": "streamingList"
+                                "id": dGbox.id,
+                                "data-target": dGbox.title
                             })
                             .text("Streaming List!")
                             .appendTo(cardContent);
-
-                        let streamingList = $("<ul>")
-                            .addClass("dropdown-content")
-                            .attr("id", "streamingList")
-                            .appendTo(cardContent);
-
-
-                        //getting streaming possibility from Utelly
-                        let apiUrlUtelly = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
-                        let rapidHost = "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com";
-                        let rapidKey = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
-
-                        $.get({
-                            url: apiUrlUtelly + gboxSearch,
-                            dataType: 'json',
-                            headers: {
-                                "x-rapidapi-host": rapidHost,
-                                "x-rapidapi-key": rapidKey
-
-                            }
-                        }).then(function(response) {
-
-                            let uDatas = response.results;
-                            // console.log("------------ Utely --------");
-                            // console.log(uDatas);
-
-                            uDatas.forEach(uD => {
-
-                                let rLocation = uD.locations.forEach(function(dLoc) {
-
-                                    let streamingListItems = $("<li>")
-                                        .appendTo(streamingList);
-
-                                    let linkListItem = $("<a>")
-                                        .attr("href", dLoc.url)
-                                        .text(dLoc.display_name)
-                                        .appendTo(streamingListItems);
-                                });
-                            });
-                        });
-
 
                     });
 
 
                 } else {
                     console.log("No Result!")
+                    $resultMessagegBox.show()
+                        .text("Please check your spelling and try again!")
+                        .addClass("redBold")
+                        .appendTo($gBoxResult);
                 }
 
 
 
             })
-        console.log("ajax done");
+            //console.log("ajax done");
     });
+
+    // Run when the streaming list button is clicked
+
+    $("body").on("click", ".btn", function(event) {
+
+        event.preventDefault();
+
+        let $_this = $(this);
+        let dataMovieID = $_this.attr("id");
+        let cardA = $(`[id=${dataMovieID}]`);
+        let searchMV = $_this.attr("data-target");
+        console.log(searchMV);
+        cardA.empty();
+
+        //Getting streaming possibility from Utelly
+
+        let apiUrlUtelly = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
+        let rapidHost = "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com";
+        let rapidKey = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
+
+        $.get({
+            url: apiUrlUtelly + searchMV,
+            dataType: 'json',
+            headers: {
+                "x-rapidapi-host": rapidHost,
+                "x-rapidapi-key": rapidKey
+
+            }
+        }).then(function(response) {
+
+            let uDatas = response.results;
+
+            if (uDatas.length > 0) {
+
+                $_this.hide();
+
+                uDatas.forEach(uD => {
+
+                    let rLocation = uD.locations.forEach(function(dLoc) {
+
+                        let rALink = $("<a>")
+                            .attr({
+                                "href": dLoc.url,
+                                "target": "_blank"
+                            })
+                            .appendTo(cardA);
+
+                        let rIcon = $("<img>")
+                            .attr("src", dLoc.icon)
+                            .appendTo(rALink);
+                        console.log(rALink);
+                    });
+                });
+
+            } else {
+                $_this.hide();
+                let $messageR = $("<p>")
+                    .show()
+                    .text("Sorry no streaming available! Check similar Movie!")
+                    .addClass("redBold")
+                    .appendTo(cardA);
+                //iMDBApiCall(searchValue);
+            }
+
+        });
+
+
+    });
+
+
 
 
     /* Functions
     ======================================================================= */
 
+
+
+    // Function that get datas from the iMDBA API
     let iMDBApiCall = function(searchTerm) {
 
         console.log("searchT" + searchTerm);
