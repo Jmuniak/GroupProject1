@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Movie Finder</title>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="nav-wrapper cyan animated fadeInUp" id="titleBar">
+                <a href="#" class="brand-logo center"><i class="material-icons">tv</i>SuperSearch</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <!-- <li><a href="sass.html">Sass</a></li>
+                    <li><a href="badges.html">Components</a></li>
+                    <li><a href="collapsible.html">JavaScript</a></li> -->
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+
+        <div class="container">
+            <h3 class="header"></h3>
+            <nav>
+                <div class="nav-wrapper cyan animated fadeInUp">
+                    <form id="gboxForm">
+                        <div class="input-field">
+                            <input id="gboxSearch" type="search" required>
+                            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                    </form>
+                </div>
+            </nav>
+        </div>
+        </div>
+        <div class="container">
+            <div class="progress">
+                <div class="indeterminate"></div>
+            </div>
+        </div>
+        <div id="gBoxResult">
+            <h3 id="resultMessagegBox"></h3>
+        </div>
+        <div id="utellyResult">
+            <h3 id="resultMessage"></h3>
+            <div id="resultDiv">
+
+            </div>
+        </div>
+        <div id="imdbResult">
+            <h3 id="resultMessageIMDB"></h3>
+            <div id="resultDivIMDB">
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="page-footer cyan animated fadeInDown">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="white-text">Footer Content</h5>
+                    <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer
+                        content.
+                    </p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="white-text">Links</h5>
+                    <ul>
+                        <li><a class="grey-text text-lighten-3" href="https://www.imdb.com/">IMBD</a></li>
+                        <li><a class="grey-text text-lighten-3" href="https://www.netflix.com/">Netflix</a></li>
+                        <li><a class="grey-text text-lighten-3" href="https://www.hulu.com/">Hulu</a></li>
+                        <li><a class="grey-text text-lighten-3" href="https://www.primevideo.com/">Prime Video</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container">
+                © 2019 Copyright Text
+                <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="./main.js"></script>
+</body>
+
+</html>
