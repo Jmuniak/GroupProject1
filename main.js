@@ -33,7 +33,7 @@ $(function () {
         // Cycle down through the options until one of them returns something positive, then run functions from the response data.
         // It would be a lot easier to use multiple search bars for this part. 
         // 
-        let gboxTitleSearchURL = "http://api-public.guidebox.com/v2/search?api_key=" + GBOX_API_KEY + "&type=movie&field=title&query=" + gboxSearch;
+        let gboxTitleSearchURL = "https://api-public.guidebox.com/v2/search?api_key=" + GBOX_API_KEY + "&type=movie&field=title&query=" + gboxSearch;
         console.log("ajax start");
         $.get({
             url: gboxTitleSearchURL,
