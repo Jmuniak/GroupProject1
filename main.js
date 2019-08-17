@@ -1,4 +1,4 @@
-$(function () {
+$(function() {
 
     let $searchMovie = $("#searchMovie");
     let $utellyResult = $("#utellyResult");
@@ -18,14 +18,16 @@ $(function () {
     $resultMessagegBox.hide();
 
 
-    $("#gboxForm").submit(function (event) {
+    $("#gboxForm").submit(function(event) {
         event.preventDefault();
 
         let gboxSearch = $("#gboxSearch").val();
 
         searchValue.push(gboxSearch);
 
+        // let GBOX_API_KEY = "7cbaa5da2a59678a995910c255de77709361f8bd";
         let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70";
+
         // for title search /v2/search?api_key=YOUR_API_KEY&type=movie&field=title&query=Terminator(gboxSearch)
         // for shows search /v2/search?api_key=YOUR_API_KEY&type=show&field=title&query=Terminator(gboxSearch)
         // for person search /v2/search?api_key=YOUR_API_KEY&type=person&query=Harrison+Ford
@@ -36,10 +38,10 @@ $(function () {
         let gboxTitleSearchURL = "https://api-public.guidebox.com/v2/search?api_key=" + GBOX_API_KEY + "&type=movie&field=title&query=" + gboxSearch;
         console.log("ajax start");
         $.get({
-            url: gboxTitleSearchURL,
-            dataType: 'json',
-        })
-            .then(function (response) {
+                url: gboxTitleSearchURL,
+                dataType: 'json',
+            })
+            .then(function(response) {
                 let dataGBOX = response;
                 console.log("datas" + dataGBOX);
 
@@ -179,7 +181,7 @@ $(function () {
         console.log("ajax done");
     });
 
-    $("body").on("click", "#trailButton", function (event) {
+    $("body").on("click", "#trailButton", function(event) {
         event.preventDefault();
 
         let gboxMovieID = $(this).attr("data-Value");
@@ -188,7 +190,7 @@ $(function () {
         $.get({
             url: gBoxTrailerUrl,
             dataType: 'json',
-        }).then(function (mTrailer) {
+        }).then(function(mTrailer) {
             console.log(mTrailer);
             console.log(mTrailer.results[0].free_web_sources[0].link);
             // add the link in so its watchable. 
@@ -199,7 +201,7 @@ $(function () {
 
     // Run when the streaming list button is clicked
 
-    $("body").on("click", "#dropButton", function (event) {
+    $("body").on("click", "#dropButton", function(event) {
 
         event.preventDefault();
 
@@ -224,7 +226,7 @@ $(function () {
                 "x-rapidapi-key": rapidKey
 
             }
-        }).then(function (response) {
+        }).then(function(response) {
 
             let uDatas = response.results;
 
@@ -234,7 +236,7 @@ $(function () {
 
                 uDatas.forEach(uD => {
 
-                    let rLocation = uD.locations.forEach(function (dLoc) {
+                    let rLocation = uD.locations.forEach(function(dLoc) {
 
                         let rALink = $("<a>")
                             .attr({
