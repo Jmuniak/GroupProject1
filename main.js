@@ -143,7 +143,7 @@ $(function () {
                             .appendTo(cardContent);
 
                         let trailerButton = $("<a>")
-                            .addClass("waves-effect waves-light btn trailerButton")
+                            .addClass("waves-effect waves-light btn")
                             .attr({
                                 "id": trailerButton,
                                 "dataValue": dGbox.id
