@@ -86,19 +86,19 @@ $(function () {
                             .html(`Released Year: <b>${dGbox.release_year}</b>`)
                             .appendTo(cardContent);
 
-                        let inTheatersResult = dGbox.in_theaters;
-                        let inTR;
+                        // let inTheatersResult = dGbox.in_theaters;
+                        // let inTR;
 
-                        if (inTheatersResult) {
+                        // if (inTheatersResult) {
 
-                            inTR = "Yes"
+                        //     inTR = "Yes"
 
-                        } else {
-                            inTR = "No";
-                        }
+                        // } else {
+                        //     inTR = "No";
+                        // }
 
-                        let inTheatersDisplay = $("<p>")
-                            .html(`In Theaters: <b>${inTR}</b>`)
+                        let ratingDisplay = $("<p>")
+                            .html(`Rating: <b>${dGbox.rating}</b>`)
                             .appendTo(cardContent);
 
                         let altTContainer = $("<div>")
@@ -130,10 +130,10 @@ $(function () {
                             altTContainer.hide();
                         }
 
-                        let ratingData = $("<div>")
-                            .addClass("rating")
-                            .text(dGbox.rating)
-                            .appendTo(divCardH);
+                        // let ratingData = $("<div>")
+                        //     .addClass("rating")
+                        //     .text(dGbox.rating)
+                        //     .appendTo(divCardH);
 
                         let cardAction = $("<div>")
                             .addClass("card-action")
