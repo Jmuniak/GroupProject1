@@ -184,7 +184,7 @@ $(function () {
 
         let gboxMovieID = $(this).attr("data-Value");
         console.log(gboxMovieID);
-        let gBoxTrailerUrl = "http://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/videos?api_key=" + GBOX_API_KEY + "&limit=1&sources=guidebox";
+        let gBoxTrailerUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/videos?api_key=" + GBOX_API_KEY + "&limit=1&sources=guidebox";
         $.get({
             url: gBoxTrailerUrl,
             dataType: 'json',
