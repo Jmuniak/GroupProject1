@@ -42,3 +42,8 @@ div p.titleData {
 div.card .card-content {
     padding: 15px;
 }
+
+div p.redBold {
+    color: red;
+    font-weight: bold;
+}
