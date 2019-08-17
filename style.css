@@ -72,6 +72,11 @@ header nav {
     box-shadow: none;
 }
 
+main nav {
+    background-color: transparent;
+    box-shadow: none;
+}
+
 footer {
     text-align: center;
 }
