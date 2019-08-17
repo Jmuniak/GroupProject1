@@ -67,6 +67,11 @@ main {
     flex: 1 0 auto;
 }
 
+header nav {
+    background-color: transparent;
+    box-shadow: none;
+}
+
 footer {
     text-align: center;
 }

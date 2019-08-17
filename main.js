@@ -24,7 +24,9 @@ $(function() {
 
         searchValue.push(gboxSearch);
 
-        let GBOX_API_KEY = "7cbaa5da2a59678a995910c255de77709361f8bd";
+        // let GBOX_API_KEY = "7cbaa5da2a59678a995910c255de77709361f8bd";
+        let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70";
+
         // for title search /v2/search?api_key=YOUR_API_KEY&type=movie&field=title&query=Terminator(gboxSearch)
         // for shows search /v2/search?api_key=YOUR_API_KEY&type=show&field=title&query=Terminator(gboxSearch)
         // for person search /v2/search?api_key=YOUR_API_KEY&type=person&query=Harrison+Ford
