@@ -1,4 +1,5 @@
 $(function() {
+    M.AutoInit();
 
     let $searchMovie = $("#searchMovie");
     let $utellyResult = $("#utellyResult");
@@ -26,7 +27,7 @@ $(function() {
         searchValue.push(gboxSearch);
 
         // let GBOX_API_KEY = "7cbaa5da2a59678a995910c255de77709361f8bd";
-        let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70";
+        //let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70";
 
         // for title search /v2/search?api_key=YOUR_API_KEY&type=movie&field=title&query=Terminator(gboxSearch)
         // for shows search /v2/search?api_key=YOUR_API_KEY&type=show&field=title&query=Terminator(gboxSearch)
@@ -56,7 +57,7 @@ $(function() {
                     dataGBOX.results.forEach(dGbox => {
 
                         let divCol = $("<div>")
-                            .addClass("col l4 m12 s12")
+                            .addClass("col s12	m12 l6 xl6")
                             .appendTo(divRow);
 
                         let divCardH = $("<div>")
@@ -146,23 +147,88 @@ $(function() {
                             .appendTo(cardContent);
 
                         let trailerButton = $("<button>")
-                            .addClass("waves-effect waves-light btn")
+                            .addClass("blue btn")
                             .attr({
                                 "id": "trailButton",
                                 "data-Value": dGbox.id
                             })
-                            .text("Trailer Button!")
+                            .text("Watch Trailer")
                             .appendTo(cardContent);
 
                         let buttonDropdown = $("<button>")
-                            .addClass("blue btn animated pulse")
+                            .addClass("dropdown-trigger blue-grey btn")
                             .attr({
                                 "id": "dropButton",
+                                "href": "#",
                                 "dataValue": dGbox.id,
-                                "data-target": dGbox.title
+                                "data-target": "droplist",
+                                "data-title": dGbox.title
                             })
                             .text("Streaming List!")
                             .appendTo(cardContent);
+
+                        let streamingList = $("<ul>")
+                            .addClass("dropdown-content")
+                            .attr({
+                                id: "droplist",
+                                "data-drop": dGbox.id
+                            })
+                            .appendTo(cardContent);
+
+                        // let apiUrlUtelly = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
+                        // let rapidHost = "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com";
+                        // let rapidKey = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
+
+                        // $.get({
+                        //     url: apiUrlUtelly + dGbox.title,
+                        //     dataType: 'json',
+                        //     headers: {
+                        //         "x-rapidapi-host": rapidHost,
+                        //         "x-rapidapi-key": rapidKey
+
+                        //     }
+                        // }).then(function(response) {
+
+                        //     let uDatas = response.results;
+
+                        //     if (uDatas.length > 0) {
+
+                        //         // $_this.hide();
+                        //         //ulDrop.empty();
+                        //         uDatas.forEach(uD => {
+
+                        //             let rLocation = uD.locations.forEach(function(dLoc) {
+
+                        //                 let streamingListItems = $("<li>")
+                        //                     .addClass("divider")
+                        //                     .attr("tabindex", -1)
+                        //                     .appendTo(streamingList);
+
+                        //                 let rALink = $("<a>")
+                        //                     .attr({
+                        //                         "href": dLoc.url,
+                        //                         "target": "_blank"
+                        //                     })
+                        //                     .appendTo(streamingListItems);
+
+                        //                 let rIcon = $("<img>")
+                        //                     .attr("src", dLoc.icon)
+                        //                     .appendTo(rALink);
+                        //                 console.log(rALink);
+
+                        //             });
+                        //         });
+
+                        //     } else {
+                        //         $_this.hide();
+                        //         let $messageR = $("<p>")
+                        //             .show()
+                        //             .text("Sorry no streaming available! Check similar Movie!")
+                        //             .addClass("redBold")
+                        //             .appendTo(cardA);
+                        //     }
+
+                        // });
 
                     });
 
@@ -200,17 +266,19 @@ $(function() {
 
 
     // Run when the streaming list button is clicked
-
     $("body").on("click", "#dropButton", function(event) {
 
         event.preventDefault();
 
         let $_this = $(this);
         let dataMovieID = $_this.attr("dataValue");
-        let cardA = $(`[dataValue=${dataMovieID}]`);
-        let searchMV = $_this.attr("data-target");
-        console.log(searchMV);
-        cardA.empty();
+        let cardA = $(`[id=${dataMovieID}]`);
+        let ulDrop = $(`[data-drop=${dataMovieID}]`);
+        let searchMV = $_this.attr("data-title");
+        // console.log("SearchMOvie - " + searchMV);
+        // console.log("CardAction - " + cardA);
+        // console.log("DataMOvieID - " + dataMovieID);
+        //cardA.empty();
 
         //Getting streaming possibility from Utelly
 
@@ -232,23 +300,29 @@ $(function() {
 
             if (uDatas.length > 0) {
 
-                $_this.hide();
-
+                // $_this.hide();
+                ulDrop.empty();
                 uDatas.forEach(uD => {
 
                     let rLocation = uD.locations.forEach(function(dLoc) {
+
+                        let streamingListItems = $("<li>")
+                            .addClass("divider")
+                            .attr("tabindex", -1)
+                            .appendTo(ulDrop);
 
                         let rALink = $("<a>")
                             .attr({
                                 "href": dLoc.url,
                                 "target": "_blank"
                             })
-                            .appendTo(cardA);
+                            .appendTo(streamingListItems);
 
                         let rIcon = $("<img>")
                             .attr("src", dLoc.icon)
                             .appendTo(rALink);
                         console.log(rALink);
+
                     });
                 });
 
