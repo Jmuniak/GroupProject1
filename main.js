@@ -25,17 +25,9 @@ $(function () {
         let gboxSearch = $("#gboxSearch").val();
 
         searchValue.push(gboxSearch);
-
         // let GBOX_API_KEY = "7cbaa5da2a59678a995910c255de77709361f8bd";
-        //let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70";
+        // let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70";
 
-        // for title search /v2/search?api_key=YOUR_API_KEY&type=movie&field=title&query=Terminator(gboxSearch)
-        // for shows search /v2/search?api_key=YOUR_API_KEY&type=show&field=title&query=Terminator(gboxSearch)
-        // for person search /v2/search?api_key=YOUR_API_KEY&type=person&query=Harrison+Ford
-        // I think we could have the url string broken up to be more dynamic and use only one search field and a if statement.
-        // Cycle down through the options until one of them returns something positive, then run functions from the response data.
-        // It would be a lot easier to use multiple search bars for this part. 
-        // 
         let gboxTitleSearchURL = "https://api-public.guidebox.com/v2/search?api_key=" + GBOX_API_KEY + "&type=movie&field=title&query=" + gboxSearch;
         console.log("ajax start");
         $.get({
@@ -302,9 +294,6 @@ $(function () {
     //                 .addClass("redBold")
     //                 .appendTo(cardA);
     //         }
-
-    //     });
-
 
     // });
 
