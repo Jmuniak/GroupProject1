@@ -191,9 +191,9 @@ $(function () {
 
         let gboxMovieID = $(this).attr("data-Value");
         console.log(gboxMovieID);
-        let gBoxTrailerUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/videos?api_key=" + GBOX_API_KEY + "&limit=30&sources=guidebox";
+        let gBoxStreamUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/?api_key=" + GBOX_API_KEY + "&sources=subscription";
         $.get({
-            url: gBoxTrailerUrl,
+            url: gBoxStreamUrl,
             dataType: 'json',
         }).then(function (mTrailer) {
             console.log(mTrailer);
