@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
     M.AutoInit();
 
     let $searchMovie = $("#searchMovie");
@@ -19,7 +19,7 @@ $(function() {
     $resultMessagegBox.hide();
 
 
-    $("#gboxForm").submit(function(event) {
+    $("#gboxForm").submit(function (event) {
         event.preventDefault();
 
         let gboxSearch = $("#gboxSearch").val();
@@ -39,12 +39,13 @@ $(function() {
         let gboxTitleSearchURL = "https://api-public.guidebox.com/v2/search?api_key=" + GBOX_API_KEY + "&type=movie&field=title&query=" + gboxSearch;
         console.log("ajax start");
         $.get({
-                url: gboxTitleSearchURL,
-                dataType: 'json',
-            })
-            .then(function(response) {
+            url: gboxTitleSearchURL,
+            dataType: 'json',
+        })
+            .then(function (response) {
                 let dataGBOX = response;
                 console.log("datas" + dataGBOX);
+                console.log(dataGBOX);
 
                 $gBoxResult.empty();
 
@@ -247,97 +248,119 @@ $(function() {
         console.log("ajax done");
     });
 
-    $("body").on("click", "#trailButton", function(event) {
+    // this is the old code, I changed the results to limit 30 so we can see which one is the main trailer. Would need to add code to use this method.
+    $("body").on("click", "#trailButton", function (event) {
         event.preventDefault();
 
         let gboxMovieID = $(this).attr("data-Value");
         console.log(gboxMovieID);
-        let gBoxTrailerUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/videos?api_key=" + GBOX_API_KEY + "&limit=1&sources=guidebox";
+        let gBoxTrailerUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/videos?api_key=" + GBOX_API_KEY + "&limit=30&sources=guidebox";
         $.get({
             url: gBoxTrailerUrl,
             dataType: 'json',
-        }).then(function(mTrailer) {
+        }).then(function (mTrailer) {
             console.log(mTrailer);
-            console.log(mTrailer.results[0].free_web_sources[0].link);
+            // console.log(results[0].free_web_sources[0].link);
+            // add the link in so its watchable. 
+            // also add an if statement for if there is no trailer link for the user to watch.
+        });
+    });
+
+    // this is the NEWEST code that gives us a massive response which we can use for subscription sources, overview, trailer, purchase locations, and much more.
+    // focus on getting the streaming list to populate correctly with materialize. 
+    $("body").on("click", "#dropButton", function (event) {
+        event.preventDefault();
+
+        let gboxMovieID = $(this).attr("dataValue");
+        console.log(gboxMovieID);
+        let gBoxStreamUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/?api_key=" + GBOX_API_KEY + "&sources=subscription";
+        $.get({
+            url: gBoxStreamUrl,
+            dataType: 'json',
+        }).then(function (mStream) {
+            console.log(mStream);
             // add the link in so its watchable. 
             // also add an if statement for if there is no trailer link for the user to watch.
         });
     });
 
 
-    // Run when the streaming list button is clicked
-    $("body").on("click", "#dropButton", function(event) {
+    //============================old code that may be very useful still================= // 
+    // Yunys Utelly function
+    // // Run when the streaming list button is clicked
+    // $("body").on("click", "#dropButton", function (event) {
 
-        event.preventDefault();
+    //     event.preventDefault();
 
-        let $_this = $(this);
-        let dataMovieID = $_this.attr("dataValue");
-        let cardA = $(`[id=${dataMovieID}]`);
-        let ulDrop = $(`[data-drop=${dataMovieID}]`);
-        let searchMV = $_this.attr("data-title");
-        // console.log("SearchMOvie - " + searchMV);
-        // console.log("CardAction - " + cardA);
-        // console.log("DataMOvieID - " + dataMovieID);
-        //cardA.empty();
+    //     let $_this = $(this);
+    //     let dataMovieID = $_this.attr("dataValue");
+    //     let cardA = $(`[id=${dataMovieID}]`);
+    //     let ulDrop = $(`[data-drop=${dataMovieID}]`);
+    //     let searchMV = $_this.attr("data-title");
+    //     // console.log("SearchMOvie - " + searchMV);
+    //     // console.log("CardAction - " + cardA);
+    //     // console.log("DataMOvieID - " + dataMovieID);
+    //     //cardA.empty();
 
-        //Getting streaming possibility from Utelly
+    //     //Getting streaming possibility from Utelly
 
-        let apiUrlUtelly = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
-        let rapidHost = "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com";
-        let rapidKey = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
+    //     let apiUrlUtelly = "https://utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com/lookup?country=us&term=";
+    //     let rapidHost = "utelly-tv-shows-and-movies-availability-v1.p.rapidapi.com";
+    //     let rapidKey = "e8c18e9a6emsh93df675062d03fdp10e88bjsn4870cb0d0bec";
 
-        $.get({
-            url: apiUrlUtelly + searchMV,
-            dataType: 'json',
-            headers: {
-                "x-rapidapi-host": rapidHost,
-                "x-rapidapi-key": rapidKey
+    //     $.get({
+    //         url: apiUrlUtelly + searchMV,
+    //         dataType: 'json',
+    //         headers: {
+    //             "x-rapidapi-host": rapidHost,
+    //             "x-rapidapi-key": rapidKey
 
-            }
-        }).then(function(response) {
+    //         }
+    //     }).then(function (response) {
 
-            let uDatas = response.results;
+    //         let uDatas = response.results;
+    //         console.log(uDatas);
 
-            if (uDatas.length > 0) {
+    //         if (uDatas.length > 0) {
 
-                // $_this.hide();
-                ulDrop.empty();
-                uDatas.forEach(uD => {
+    //             // $_this.hide();
+    //             ulDrop.empty();
+    //             uDatas.forEach(uD => {
 
-                    let rLocation = uD.locations.forEach(function(dLoc) {
+    //                 let rLocation = uD.locations.forEach(function (dLoc) {
 
-                        let streamingListItems = $("<li>")
-                            .addClass("divider")
-                            .attr("tabindex", -1)
-                            .appendTo(ulDrop);
+    //                     let streamingListItems = $("<li>")
+    //                         .addClass("divider")
+    //                         .attr("tabindex", -1)
+    //                         .appendTo(ulDrop);
 
-                        let rALink = $("<a>")
-                            .attr({
-                                "href": dLoc.url,
-                                "target": "_blank"
-                            })
-                            .appendTo(streamingListItems);
+    //                     let rALink = $("<a>")
+    //                         .attr({
+    //                             "href": dLoc.url,
+    //                             "target": "_blank"
+    //                         })
+    //                         .appendTo(streamingListItems);
 
-                        let rIcon = $("<img>")
-                            .attr("src", dLoc.icon)
-                            .appendTo(rALink);
-                        console.log(rALink);
+    //                     let rIcon = $("<img>")
+    //                         .attr("src", dLoc.icon)
+    //                         .appendTo(rALink);
+    //                     console.log(rALink);
 
-                    });
-                });
+    //                 });
+    //             });
 
-            } else {
-                $_this.hide();
-                let $messageR = $("<p>")
-                    .show()
-                    .text("Sorry no streaming available! Check similar Movie!")
-                    .addClass("redBold")
-                    .appendTo(cardA);
-            }
+    //         } else {
+    //             $_this.hide();
+    //             let $messageR = $("<p>")
+    //                 .show()
+    //                 .text("Sorry no streaming available! Check similar Movie!")
+    //                 .addClass("redBold")
+    //                 .appendTo(cardA);
+    //         }
 
-        });
+    //     });
 
 
-    });
+    // });
 
 });
