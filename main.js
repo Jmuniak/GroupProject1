@@ -148,13 +148,13 @@ $(function () {
                             .text("Watch Trailer")
                             .appendTo(cardContent);
 
-                        let buttonDropdown = $("<button>")
+                        let buttonDropdown = $("<a>")
                             .addClass("dropdown-trigger blue-grey btn")
                             .attr({
                                 "id": "dropButton",
                                 "href": "#",
                                 "dataValue": dGbox.id,
-                                "data-target": "droplist",
+                                "data-target": dGbox.id + 17, // change droplist to another form of movie id. also look into the auto init being later since the list is created after the doc is loaded
                                 "data-title": dGbox.title
                             })
                             .text("Streaming List!")
@@ -163,7 +163,7 @@ $(function () {
                         let streamingList = $("<ul>")
                             .addClass("dropdown-content")
                             .attr({
-                                id: "droplist",
+                                "id": dGbox.id + 17,
                                 "data-drop": dGbox.id
                             })
                             .appendTo(cardContent);
@@ -198,15 +198,26 @@ $(function () {
         }).then(function (mTrailer) {
             console.log(mTrailer);
             // add the link in so its watchable. User materialize Modal for that. use the over view in the modal
-            // also add an if statement for if there is no trailer link for the user to watch.
+            // also add an if statement for if there is no trailer link for the user to watch. "something went wrong, trailer unavailable."
         });
     });
 
     // this is the NEWEST code that gives us a massive response which we can use for subscription sources, overview, trailer, purchase locations, and much more.
     // focus on getting the streaming list to populate correctly with materialize. 
+
+
     $("body").on("click", "#dropButton", function (event) {
         event.preventDefault();
-
+        M.AutoInit();
+        let $_this = $(this);
+        let dataMovieID = $_this.attr("dataValue");
+        let cardA = $(`[id=${dataMovieID}]`);
+        let ulDrop = $(`[data-drop=${dataMovieID}]`);
+        let searchMV = $_this.attr("data-title");
+        // console.log("SearchMOvie - " + searchMV);
+        // console.log("CardAction - " + cardA);
+        // console.log("DataMOvieID - " + dataMovieID);
+        // cardA.empty();
         let gboxMovieID = $(this).attr("dataValue");
         console.log(gboxMovieID);
         let gBoxStreamUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/?api_key=" + GBOX_API_KEY + "&sources=subscription";
@@ -215,11 +226,44 @@ $(function () {
             dataType: 'json',
         }).then(function (mStream) {
             console.log(mStream);
-            // add the link in so its watchable. 
-            // also add an if statement for if there is no trailer link for the user to watch.
-        });
-    });
+            // start with an if statement
+            // if subscription_web_sources has content do the following
+            let subWebSources = mStream.subscription_web_sources;
+            console.log(subWebSources);
+            // for each through subwebsources. grab display_name and the link
+            // populate the <li> with those results. 
+            // if subscription_web_sources doesn't have content "sorry not available for streaming"
+            if (subWebSources.length > 0) {
+                ulDrop.empty();
 
+                subWebSources.forEach(elem => {
+                    M.AutoInit();
+                    let streamingListItems = $("<li>")
+                        // .addClass("divider")
+                        // .attr("tabindex", -1)
+                        .appendTo(ulDrop);
+
+                    let rALink = $("<a>")
+                        .text(elem.display_name)
+                        .attr({
+                            "href": elem.link,
+                            "target": "_blank"
+                        })
+                        .appendTo(streamingListItems);
+
+                    // let rIcon = $("<img>")
+                    //     .attr("src", dLoc.icon)
+                    //     .appendTo(rALink);
+                    // console.log(rALink);
+
+
+                });
+            };
+        });
+        console.log(M)
+        M.AutoInit();
+        $('.dropdown-trigger').dropdown();
+    });
 
     //============================old code that may be very useful still================= // 
     // Yunys Utelly function
@@ -295,5 +339,6 @@ $(function () {
     //         }
 
     // });
+
 
 });
