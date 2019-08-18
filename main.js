@@ -197,8 +197,7 @@ $(function () {
             dataType: 'json',
         }).then(function (mTrailer) {
             console.log(mTrailer);
-            // console.log(results[0].free_web_sources[0].link);
-            // add the link in so its watchable. 
+            // add the link in so its watchable. User materialize Modal for that. use the over view in the modal
             // also add an if statement for if there is no trailer link for the user to watch.
         });
     });
