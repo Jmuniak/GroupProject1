@@ -102,6 +102,11 @@ $(function () {
                             .html(`Rating: <b>${dGbox.rating}</b>`)
                             .appendTo(cardContent);
 
+                        let runtimeDisplay = $("<p>")
+                            .html(`Runtime: <b>${dOMDB.runtime}</b>`)
+                            .addClass(`runTime`)
+                            .appendTo(cardContent);
+
                         let altTContainer = $("<div>")
                             .addClass("alternateTitle")
                             .appendTo(cardContent);
@@ -173,28 +178,6 @@ $(function () {
                             })
                             .appendTo(cardContent);
 
-                        // OMDB API Call, needs to be achieved while each card creates itself so we can use the gBox.title and dGbox.release_year to grab the right runtime. 
-                        // OMDB API Call
-                        let omdbURL = "http://www.omdbapi.com/?t=" + gboxSearch + "&y=" + dGbox.release_year + "&APIkey=trilogy";
-                        $.get({
-                            url: omdbURL,
-                            dataType: 'json',
-                        })
-                            .then(function (OMDBresponse) {
-                                let dataOMDB = OMDBresponse;
-                                console.log(dataOMDB);
-                                // dataOMDB.forEach(dOMDB => { // not working
-                                //     let runtimeDisplay = $("<p>")
-                                //         .html(`Runtime: <b>${dOMDB.runtime}</b>`)
-                                //         .appendTo(cardContent);
-                                // })
-                                dataOMDB.forEach(dOMDB => {
-                                    let runtimeDisplay = $("<p>")
-                                        .html(`Runtime: <b>${dOMDB.runtime}</b>`)
-                                        .appendTo(cardContent);
-                                })
-                            });
-
 
                     });
 
@@ -206,11 +189,31 @@ $(function () {
                         .appendTo($gBoxResult);
                 }
 
-
-
+                dOMDB(dGbox);
             })
+
         console.log("ajax done");
     });
+
+    // OMDB API Call, needs to be achieved while each card creates itself so we can use the gBox.title and dGbox.release_year to grab the right runtime. 
+    function dOMDB() {
+        $(".card-content").each(function () {
+            let _this = this;
+            console.log($(this));
+            let omdbURL = "http://www.omdbapi.com/?t=" + dGbox.title + "&y=" + dGbox.release_year + "&APIkey=trilogy";
+            $.get({
+                url: omdbURL,
+                dataType: 'json',
+            })
+                .then(function (OMDBresponse) {
+                    let dOMDB = OMDBresponse;
+                    console.log(dOMDB);
+                    $(".runTime", _this).text(`Runtime: <b>${dOMDB.runtime}</b>`);
+
+                });
+        })
+    }
+
 
     // this is the old code, I changed the results to limit 30 so we can see which one is the main trailer. Would need to add code to use this method.
     $("body").on("click", "#trailButton", function (event) {
