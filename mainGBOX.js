@@ -173,17 +173,24 @@ $(function () {
                             })
                             .appendTo(cardContent);
 
-                    });
-
-                    let omdbURL = "http://www.omdbapi.com/?t=" + gboxSearch + "&y=2013&APIkey=trilogy";
-                    $.get({
-                        url: omdbURL,
-                        dataType: 'json',
-                    })
-                        .then(function (OMDBresponse) {
-                            let dataOMDB = OMDBresponse;
-
+                        // OMDB API Call, needs to be achieved while each card creates itself so we can use the gBox.title and dGbox.release_year to grab the right runtime. 
+                        let omdbURL = "http://www.omdbapi.com/?t=" + gboxSearch + "&y=" + dGbox.release_year + "&APIkey=trilogy";
+                        $.get({
+                            url: omdbURL,
+                            dataType: 'json',
                         })
+                            .then(function (OMDBresponse) {
+                                let dataOMDB = OMDBresponse;
+                                console.log(dataOMDB);
+                                // dataOMDB.forEach(dOMDB => { // not working
+                                //     let runtimeDisplay = $("<p>")
+                                //         .html(`Runtime: <b>${dOMDB.runtime}</b>`)
+                                //         .appendTo(cardContent);
+                                // })
+                            });
+
+
+                    });
 
                 } else {
                     console.log("No Result!")
