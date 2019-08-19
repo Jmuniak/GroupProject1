@@ -174,6 +174,7 @@ $(function () {
                             .appendTo(cardContent);
 
                         // OMDB API Call, needs to be achieved while each card creates itself so we can use the gBox.title and dGbox.release_year to grab the right runtime. 
+                        // OMDB API Call
                         let omdbURL = "http://www.omdbapi.com/?t=" + gboxSearch + "&y=" + dGbox.release_year + "&APIkey=trilogy";
                         $.get({
                             url: omdbURL,
@@ -187,6 +188,11 @@ $(function () {
                                 //         .html(`Runtime: <b>${dOMDB.runtime}</b>`)
                                 //         .appendTo(cardContent);
                                 // })
+                                dataOMDB.forEach(dOMDB => {
+                                    let runtimeDisplay = $("<p>")
+                                        .html(`Runtime: <b>${dOMDB.runtime}</b>`)
+                                        .appendTo(cardContent);
+                                })
                             });
 
 
