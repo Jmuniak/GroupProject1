@@ -12,7 +12,7 @@ $(function () {
     let $resultMessagegBox = $("#resultMessagegBox");
     let searchValue = [];
     let utDatas = [];
-    let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70";
+    let GBOX_API_KEY = "98abf308077c7e107fa86590d74feff3f6fb2ff8";
 
     $resultMessage.hide();
     $resultDivIMBD.hide();
@@ -25,8 +25,13 @@ $(function () {
         let gboxSearch = $("#gboxSearch").val();
 
         searchValue.push(gboxSearch);
-        // let GBOX_API_KEY = "7cbaa5da2a59678a995910c255de77709361f8bd";
-        // let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70";
+        // let GBOX_API_KEY = "7cbaa5da2a59678a995910c255de77709361f8bd"; old
+        // let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70"; old
+        // let GBOX_API_KEY = "98abf308077c7e107fa86590d74feff3f6fb2ff8"; Jason's
+        // let GBOX_API_KEY = "61c754f09f48fdfbf850ad240e0e95ae82ac47e9"; Mike F's
+
+
+
 
         let gboxTitleSearchURL = "https://api-public.guidebox.com/v2/search?api_key=" + GBOX_API_KEY + "&type=movie&field=title&query=" + gboxSearch;
         console.log("ajax start");
@@ -170,6 +175,15 @@ $(function () {
 
                     });
 
+                    let omdbURL = "http://www.omdbapi.com/?t=" + gboxSearch + "&y=2013&APIkey=trilogy";
+                    $.get({
+                        url: omdbURL,
+                        dataType: 'json',
+                    })
+                        .then(function (OMDBresponse) {
+                            let dataOMDB = OMDBresponse;
+
+                        })
 
                 } else {
                     console.log("No Result!")
@@ -249,20 +263,17 @@ $(function () {
                             "href": elem.link,
                             "target": "_blank"
                         })
-                        .appendTo(streamingListItems);
+                        .appendTo(streamingListItems)
+                    $('.dropdown-trigger').dropdown();
 
                     // let rIcon = $("<img>")
                     //     .attr("src", dLoc.icon)
                     //     .appendTo(rALink);
                     // console.log(rALink);
 
-
                 });
             };
         });
-        console.log(M)
-        M.AutoInit();
-        $('.dropdown-trigger').dropdown();
     });
 
     //============================old code that may be very useful still================= // 
