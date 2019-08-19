@@ -30,15 +30,7 @@ $(function () {
         // let GBOX_API_KEY = "98abf308077c7e107fa86590d74feff3f6fb2ff8"; Jason's
         // let GBOX_API_KEY = "61c754f09f48fdfbf850ad240e0e95ae82ac47e9"; Mike F's
 
-        // let omdbURL = "http://www.omdbapi.com/?t=" + gboxSearch + "&y=2013&APIkey=trilogy";
-        $.get({
-            url: omdbURL,
-            dataType: 'json',
-        })
-            .then(function (OMDBresponse) {
-                let dataOMDB = OMDBresponse;
 
-            })
 
 
         let gboxTitleSearchURL = "https://api-public.guidebox.com/v2/search?api_key=" + GBOX_API_KEY + "&type=movie&field=title&query=" + gboxSearch;
@@ -183,6 +175,15 @@ $(function () {
 
                     });
 
+                    let omdbURL = "http://www.omdbapi.com/?t=" + gboxSearch + "&y=2013&APIkey=trilogy";
+                    $.get({
+                        url: omdbURL,
+                        dataType: 'json',
+                    })
+                        .then(function (OMDBresponse) {
+                            let dataOMDB = OMDBresponse;
+
+                        })
 
                 } else {
                     console.log("No Result!")
