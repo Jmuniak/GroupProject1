@@ -7,7 +7,7 @@ $(function () {
     let $resultDiv = $("#resultDiv");
     let $imdbResult = $("#imdbResult");
     let $resultMessageIMDB = $("#resultMessageIMDB");
-    let $resultDivIMBD = $("#resultDivIMDB");
+    let $resultDivIMDB = $("#resultDivIMDB");
     let $titleSearchResult = $("#titleSearchResult");
     let $resultMessagegBox = $("#resultMessagegBox");
     let searchValue = [];
@@ -15,7 +15,7 @@ $(function () {
     let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70";
 
     $resultMessage.hide();
-    $resultDivIMBD.hide();
+    $resultDivIMDB.hide();
     $resultMessagegBox.hide();
 
 
@@ -42,13 +42,13 @@ $(function () {
                 console.log(titleSearchData.Search);
                 $titleSearchResult.empty();
 
-                if (titleSearchData.Search > 0) {
+                if (titleSearchData > 0) {
 
                     let divRow = $("<div>")
                         .addClass("row")
                         .appendTo($titleSearchResult);
 
-                    titleSearchData.Search.forEach(dIMBD => {
+                    titleSearchData.Search.forEach(dIMDB => {
 
                         let divCol = $("<div>")
                             .addClass("col s12	m12 l6 xl6")
@@ -63,7 +63,7 @@ $(function () {
                             .appendTo(divCardH);
 
                         let img = $("<img>")
-                            .attr("src", dIMBD.Poster)
+                            .attr("src", dIMDB.Poster)
                             .appendTo(divImg);
 
                         let cardStacked = $("<div>")
@@ -76,18 +76,18 @@ $(function () {
 
                         let titleData = $("<p>")
                             .addClass("titleData animated fadeIn")
-                            .text(dIMBD.Title)
+                            .text(dIMDB.Title)
                             .appendTo(cardContent);
 
                         let yearRData = $("<p>")
-                            .html(`Released Year: <b>${dIMBD.Year}</b>`)
+                            .html(`Released Year: <b>${dIMDB.Year}</b>`)
                             .appendTo(cardContent);
 
                         let cardAction = $("<div>")
                             .addClass("card-action")
                             .attr({
-                                "id": dIMBD.imbdID,
-                                "data-movie": dIMBD.Title
+                                "id": dIMDB.imdbID,
+                                "data-movie": dIMDB.Title
                             })
                             .appendTo(cardContent);
 
@@ -105,9 +105,9 @@ $(function () {
                             .attr({
                                 "id": "dropButton",
                                 "href": "#",
-                                "dataValue": dIMBD.imbdID,
-                                "data-target": dIMBD.imbdID + 17, // change droplist to another form of movie id. also look into the auto init being later since the list is created after the doc is loaded
-                                "data-title": dIMBD.Title
+                                "dataValue": dIMDB.imdbID,
+                                "data-target": dIMDB.imdbID + 17, // change droplist to another form of movie id. also look into the auto init being later since the list is created after the doc is loaded
+                                "data-title": dIMDB.Title
                             })
                             .text("Streaming List!")
                             .appendTo(cardContent);
@@ -115,8 +115,8 @@ $(function () {
                         let streamingList = $("<ul>")
                             .addClass("dropdown-content")
                             .attr({
-                                "id": dIMBD.imbdID + 17,
-                                "data-drop": dIMBD.imbdID
+                                "id": dIMDB.imdbID + 17,
+                                "data-drop": dIMDB.imdbID
                             })
                             .appendTo(cardContent);
                     });
