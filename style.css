@@ -36,7 +36,7 @@ div li.altT {
 }
 
 div p.titleData {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: bold;
 }
 
@@ -83,4 +83,10 @@ header nav {
 
 footer {
     text-align: center;
+}
+
+@media only screen and (min-width: 993px) {
+    div.container {
+        width: 96%;
+    }
 }
