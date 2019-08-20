@@ -139,7 +139,6 @@ $(function () {
                     });
 
                 } else {
-                    console.log("No Result!")
                     $resultMessage.show()
                         .text("Please check your spelling and try again!")
                         .addClass("redBold")
@@ -155,7 +154,7 @@ $(function () {
     function dOMDB() {
         $(".card-content").each(function () {
             let _this = this;
-            console.log($(this));
+            // console.log($(this));
             let omdbURL = "http://www.omdbapi.com/?t=" + dGbox.title + "&y=" + dGbox.release_year + "&APIkey=trilogy";
             $.get({
                 url: omdbURL,
@@ -163,7 +162,6 @@ $(function () {
             })
                 .then(function (OMDBresponse) {
                     let dOMDB = OMDBresponse;
-                    console.log(dOMDB);
                     $(".runTime", _this).text(`Runtime: <b>${dOMDB.runtime}</b>`);
                 });
         })
@@ -172,18 +170,16 @@ $(function () {
     // Not working yet Trailer button API Call
     $("body").on("click", "#trailerButton", function (event) {
         event.preventDefault();
-
         let gboxMovieID = $(this).attr("data-Value");
-        console.log(gboxMovieID);
         let gBoxStreamUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/?api_key=" + GBOX_API_KEY + "&sources=subscription";
         $.get({
             url: gBoxStreamUrl,
             dataType: 'json',
-        }).then(function (mTrailer) {
-            console.log(mTrailer);
-            // add the link in so its watchable.
-            // also add an if statement for if there is no trailer link for the user to watch. "something went wrong, trailer unavailable."
-        });
+        })
+            .then(function (mTrailer) {
+                // add the link in so its watchable.
+                // also add an if statement for if there is no trailer link for the user to watch. "something went wrong, trailer unavailable."
+            });
     });
 
     // Check for Subscription streaming availability button with API Call
@@ -194,36 +190,33 @@ $(function () {
         let cardA = $(`[id=${dataMovieID}]`);
         let ulDrop = $(`[id=${dataMovieID}]`);
         let gboxMovieID = $(this).attr("dataValue");
-        console.log(gboxMovieID);
         let gBoxStreamUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/?api_key=" + GBOX_API_KEY + "&sources=subscription";
         $.get({
             url: gBoxStreamUrl,
             dataType: 'json',
-        }).then(function (mStream) {
-            console.log(mStream);
-            let subWebSources = mStream.subscription_web_sources;
-            console.log(subWebSources);
-
-            if (subWebSources.length > 0) {
-                ulDrop.empty();
-                subWebSources.forEach(elem => {
-                    let subscriptionLink = $("<a>")
-                        .text(elem.display_name)
-                        .attr({
-                            "href": elem.link,
-                            "target": "_blank"
-                        })
-                        .appendTo(ulDrop)
-                });
-            } else {
-                $_this.hide();
-                let $messageR = $("<p>")
-                    .show()
-                    .text("Sorry no streaming available! Check similar Movie!")
-                    .addClass("redBold")
-                    .appendTo(cardA);
-            };
-        });
+        })
+            .then(function (mStream) {
+                let subWebSources = mStream.subscription_web_sources;
+                if (subWebSources.length > 0) {
+                    ulDrop.empty();
+                    subWebSources.forEach(elem => {
+                        let subscriptionLink = $("<a>")
+                            .text(elem.display_name)
+                            .attr({
+                                "href": elem.link,
+                                "target": "_blank"
+                            })
+                            .appendTo(ulDrop)
+                    });
+                } else {
+                    $_this.hide();
+                    let $messageR = $("<p>")
+                        .show()
+                        .text("Sorry no streaming available! Check similar Movie!")
+                        .addClass("redBold")
+                        .appendTo(cardA);
+                };
+            });
     });
 
 
