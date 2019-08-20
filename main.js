@@ -1,102 +1,230 @@
- // Initial array of movies
- var movies = ["The Matrix", "The Notebook", "Mr. Nobody", "The Lion King"];
+$(function () {
+    M.AutoInit();
 
- // displayMovieInfo function re-renders the HTML to display the appropriate content
- function displayMovieInfo() {
+    let $resultMessage = $("#resultMessage");
+    let $gBoxResult = $("#gBoxResult");
+    let $resultMessage = $("#resultMessagegBox");
+    let searchValue = [];
+    let GBOX_API_KEY = "98abf308077c7e107fa86590d74feff3f6fb2ff8";
+    $resultMessage.hide();
 
-     var movie = $(this).attr("data-name");
-     var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=trilogy";
+    // Form Submit, generate search results with the API Call
+    $("#gboxForm").submit(function (event) {
+        event.preventDefault();
+        let gboxSearch = $("#gboxSearch").val();
+        searchValue.push(gboxSearch);
+        // let GBOX_API_KEY = "7cbaa5da2a59678a995910c255de77709361f8bd"; old
+        // let GBOX_API_KEY = "4d70e7bce2dce36115cecdf657c823250d0ced70"; old
+        // let GBOX_API_KEY = "98abf308077c7e107fa86590d74feff3f6fb2ff8"; Jason's and current
+        // let GBOX_API_KEY = "61c754f09f48fdfbf850ad240e0e95ae82ac47e9"; Mike F's
+        let gboxTitleSearchURL = "https://api-public.guidebox.com/v2/search?api_key=" + GBOX_API_KEY + "&type=movie&field=title&query=" + gboxSearch;
 
-     // Creating an AJAX call for the specific movie button being clicked
-     $.ajax({
-         url: queryURL,
-         method: "GET"
-     }).then(function (response) {
+        $.get({
+            url: gboxTitleSearchURL,
+            dataType: 'json',
+        })
+            .then(function (response) {
+                let dataGBOX = response;
 
-         // Creating a div to hold the movie
-         var movieDiv = $("<div class='movie'>");
+                $gBoxResult.empty();
 
-         // Storing the rating data
-         var rating = response.Rated;
+                if (dataGBOX.total_results > 0) {
+                    // Dynamically create Display cards
+                    let divRow = $("<div>")
+                        .addClass("row")
+                        .appendTo($gBoxResult);
 
-         // Creating an element to have the rating displayed
-         var pOne = $("<p>").text("Rating: " + rating);
+                    dataGBOX.results.forEach(dGbox => {
 
-         // Displaying the rating
-         movieDiv.append(pOne);
+                        let divCol = $("<div>")
+                            .addClass("col s12	m12 l6 xl6")
+                            .appendTo(divRow);
 
-         // Storing the release year
-         var released = response.Released;
+                        let divCardH = $("<div>")
+                            .addClass("card horizontal animated rollIn")
+                            .appendTo(divCol);
 
-         // Creating an element to hold the release year
-         var pTwo = $("<p>").text("Released: " + released);
+                        let divImg = $("<div>")
+                            .addClass("card-image animated fadeIn")
+                            .appendTo(divCardH);
 
-         // Displaying the release year
-         movieDiv.append(pTwo);
+                        let img = $("<img>")
+                            .attr("src", dGbox.poster_240x342)
+                            .appendTo(divImg);
 
-         // Storing the plot
-         var plot = response.Plot;
+                        let cardStacked = $("<div>")
+                            .addClass("card-stacked")
+                            .appendTo(divCardH);
 
-         // Creating an element to hold the plot
-         var pThree = $("<p>").text("Plot: " + plot);
+                        let cardContent = $("<div>")
+                            .addClass("card-content animated zoomIn")
+                            .appendTo(cardStacked);
 
-         // Appending the plot
-         movieDiv.append(pThree);
+                        let titleData = $("<p>")
+                            .addClass("titleData animated fadeIn")
+                            .text(dGbox.title)
+                            .appendTo(cardContent);
 
-         // Retrieving the URL for the image
-         var imgURL = response.Poster;
+                        let yearRData = $("<p>")
+                            .html(`Released Year: <b>${dGbox.release_year}</b>`)
+                            .appendTo(cardContent);
 
-         // Creating an element to hold the image
-         var image = $("<img>").attr("src", imgURL);
+                        let ratingDisplay = $("<p>")
+                            .html(`Rating: <b>${dGbox.rating}</b>`)
+                            .appendTo(cardContent);
 
-         // Appending the image
-         movieDiv.append(image);
+                        // Not working yet
+                        let runtimeDisplay = $("<p>")
+                            // .html(`Runtime: <b>${dOMDB.runtime}</b>`)
+                            .addClass(`runTime`)
+                            .appendTo(cardContent);
 
-         // Putting the entire movie above the previous movies
-         $("#movies-view").prepend(movieDiv);
-     });
+                        let altTContainer = $("<div>")
+                            .addClass("alternateTitle")
+                            .appendTo(cardContent);
 
- }
+                        let altTitle = dGbox.alternate_titles.slice(0, 3);
 
- // Function for displaying movie data
- function renderButtons() {
+                        if (altTitle.length > 0) {
 
-     // Deleting the movies prior to adding new movies
-     // (this is necessary otherwise you will have repeat buttons)
-     $("#buttons-view").empty();
+                            let altT = $("<p>")
+                                .html("<b>Alternate Title</b>")
+                                .appendTo(altTContainer);
 
-     // Looping through the array of movies
-     for (var i = 0; i < movies.length; i++) {
+                            let ulAltT = $("<ul>")
+                                .appendTo(altTContainer);
 
-         // Then dynamicaly generating buttons for each movie in the array
-         // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
-         var a = $("<button>");
-         // Adding a class of movie-btn to our button
-         a.addClass("movie-btn");
-         // Adding a data-attribute
-         a.attr("data-name", movies[i]);
-         // Providing the initial button text
-         a.text(movies[i]);
-         // Adding the button to the buttons-view div
-         $("#buttons-view").append(a);
-     }
- }
+                            altTitle.forEach(aT => {
 
- // This function handles events where a movie button is clicked
- $("#add-movie").on("click", function (event) {
-     event.preventDefault();
-     // This line grabs the input from the textbox
-     var movie = $("#movie-input").val().trim();
+                                let ulListItem = $("<li>")
+                                    .addClass("altT")
+                                    .text(aT)
+                                    .appendTo(ulAltT);
+                            });
 
-     // Adding movie from the textbox to our array
-     movies.push(movie);
+                        } else {
 
-     // Calling renderButtons which handles the processing of our movie array
-     renderButtons();
- });
+                            altTContainer.hide();
+                        }
 
- // Adding a click event listener to all elements with a class of "movie-btn"
- $(document).on("click", ".movie-btn", displayMovieInfo);
+                        let cardAction = $("<div>")
+                            .addClass("card-action")
+                            .attr({
+                                "id": dGbox.id,
+                                "data-movie": dGbox.title
+                            })
+                            .appendTo(cardContent);
 
- // Calling the renderButtons function to display the intial buttons
- renderButtons();
+                        // Not working yet
+                        let trailerButton = $("<button>")
+                            .addClass("blue btn")
+                            .attr({
+                                "id": "trailerButton",
+                                "data-Value": dGbox.id
+                            })
+                            .text("Watch Trailer")
+                            .appendTo(cardContent);
+
+                        let buttonDropdown = $("<a>")
+                            .addClass("dropdown-trigger blue-grey btn")
+                            .attr({
+                                "id": "dropButton",
+                                "href": "#",
+                                "dataValue": dGbox.id,
+                                "data-target": dGbox.id,
+                                "data-title": dGbox.title
+                            })
+                            .text("Streaming List!")
+                            .appendTo(cardContent);
+                    });
+
+                } else {
+                    console.log("No Result!")
+                    $resultMessage.show()
+                        .text("Please check your spelling and try again!")
+                        .addClass("redBold")
+                        .appendTo($gBoxResult);
+                }
+
+                // Not working yet
+                //dOMDB(dGbox);
+            })
+    });
+
+    // OMDB API Call, needs to be achieved while each card creates itself so we can use the gBox.title and dGbox.release_year to grab the right runtime from OMDB. 
+    function dOMDB() {
+        $(".card-content").each(function () {
+            let _this = this;
+            console.log($(this));
+            let omdbURL = "http://www.omdbapi.com/?t=" + dGbox.title + "&y=" + dGbox.release_year + "&APIkey=trilogy";
+            $.get({
+                url: omdbURL,
+                dataType: 'json',
+            })
+                .then(function (OMDBresponse) {
+                    let dOMDB = OMDBresponse;
+                    console.log(dOMDB);
+                    $(".runTime", _this).text(`Runtime: <b>${dOMDB.runtime}</b>`);
+                });
+        })
+    }
+
+    // Not working yet Trailer button API Call
+    $("body").on("click", "#trailerButton", function (event) {
+        event.preventDefault();
+
+        let gboxMovieID = $(this).attr("data-Value");
+        console.log(gboxMovieID);
+        let gBoxStreamUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/?api_key=" + GBOX_API_KEY + "&sources=subscription";
+        $.get({
+            url: gBoxStreamUrl,
+            dataType: 'json',
+        }).then(function (mTrailer) {
+            console.log(mTrailer);
+            // add the link in so its watchable.
+            // also add an if statement for if there is no trailer link for the user to watch. "something went wrong, trailer unavailable."
+        });
+    });
+
+    // Check for Subscription streaming availability button with API Call
+    $("body").on("click", "#dropButton", function (event) {
+        event.preventDefault();
+        let $_this = $(this);
+        let dataMovieID = $_this.attr("dataValue");
+        let cardA = $(`[id=${dataMovieID}]`);
+        let ulDrop = $(`[id=${dataMovieID}]`);
+        let gboxMovieID = $(this).attr("dataValue");
+        console.log(gboxMovieID);
+        let gBoxStreamUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/?api_key=" + GBOX_API_KEY + "&sources=subscription";
+        $.get({
+            url: gBoxStreamUrl,
+            dataType: 'json',
+        }).then(function (mStream) {
+            console.log(mStream);
+            let subWebSources = mStream.subscription_web_sources;
+            console.log(subWebSources);
+
+            if (subWebSources.length > 0) {
+                ulDrop.empty();
+                subWebSources.forEach(elem => {
+                    let subscriptionLink = $("<a>")
+                        .text(elem.display_name)
+                        .attr({
+                            "href": elem.link,
+                            "target": "_blank"
+                        })
+                        .appendTo(ulDrop)
+                });
+            } else {
+                $_this.hide();
+                let $messageR = $("<p>")
+                    .show()
+                    .text("Sorry no streaming available! Check similar Movie!")
+                    .addClass("redBold")
+                    .appendTo(cardA);
+            };
+        });
+    });
+
+
+});
