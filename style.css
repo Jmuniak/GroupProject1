@@ -11,18 +11,6 @@ div.card {
     margin: .5rem 0.5rem 1rem 0.5rem;
 }
 
-/* div.rating {
-    display: inline-block;
-    position: absolute;
-    padding: 5px;
-    bottom: 5px;
-    right: 10px;
-    color: white;
-    font-size: 25px;
-    border-radius: 8px;
-    background: #2196f3;
-    font-family: 'Anton', sans-serif;
-} */
 
 div.alternateTitle {
     margin-top: 10px;
