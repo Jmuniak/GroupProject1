@@ -1,76 +1,18 @@
 # GroupProject1
 
-Made use of Trello to delegate tasks.
-
-Requirements:
-1. Must use at least 2 APIs - yes GuideBox and OMDB
-2. Must use AJAX to pull data - yes
-3. Must utilize at least one new library - yes
-4. Must have a polished front end - yes
-5. Must meet good quality coding standards - yes
-6. Must NOT use alerts, confirms, or prompts (no modals) - yes
-7. Must have some sort of repeating element - yes Cards
-8. Must use Bootstrap or Alternative CSS Framework - yes Materialize 
-9. Must be Deployed on GitHub Pages or Firebase - yes github
-10. Must have User Input Validation - yes
-
-Bonus:
-1. Make it mobile responsive - yes
-2. Include materialize - yes
-3. ...
-
-API Suggestions:
-1. Allow CORS (cross-origin resource sharing) - yes
-2. Require simple or no authentication - no authentication needed
-3. Return a JSON response - yes
-4. Are well documented - yes
-5. Google some public api’s to use like giphy or Spotify etc. 
-
-
-SuperSearch Movie Finder
----------
-A place where anyone can search a movie title and easily find out where it's streamable with a subscription such as Netflix, Hulu, etc. 
-
-
-### Game Functions:
-Step 1:
-Take the user's search input and make the first API call. 
-
-Step 2:
-Dynamically create a card for each result or let the user know they might need to check their spelling.
-
-Step 3:
-
-
-
------Not mine below, good .md template for future projects--------
-
-<!--//From a template I found online//-->
-<!--## Getting Started-->
-<!---->
-<!--These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.-->
-<!---->
-<!--### Prerequisites-->
-<!---->
-<!--What things you need to install the software and how to install them-->
-<!---->
-<!--```-->
-<!--Give examples-->
-<!--```-->
-<!---->
-<!--### Installing-->
-<!---->
-<!--A step by step series of examples that tell you how to get a development env running-->
-<!---->
-<!--Say what the step will be-->
-<!---->
-<!---->
-<!--## Deployment-->
-<!---->
-<!--Add additional notes about how to deploy this on a live system-->
-<!---->
-<!--## Built With-->
-<!---->
-<!--* VSCode -->
-<!---->
-
+With your group, answer each of the following questions:
+Who is your target audience?
+-People who like super heros
+What is the problem that the product will address?
+-It will help people find the best place to find content based on who their favorite super hero is
+What is the primary goal of the product?
+-It will help people find the best place to find content based on who their favorite super hero is
+Identify and prioritize essential user stories (limit this to 3 or fewer)?
+-I want to watch Ironman, but I dont know what streaming service will have my content
+-I have multiple streaming services and I want to compare the librarys at once
+Remember, your MVP should be the absolute minimum product that you need to pitch your idea to investors (or your classmates). Think bare essentials.
+As an example, the essential features of an instagram-like application might look like:
+As a user, I want to post pictures so that I can share my life.
+As a user, I want to be able to search for other users so that I can find their list of Images.
+As a user, I want to be able to view other people's Images so that I can keep up with what's happening in their lives.
+Things like liking photos, sending photos to friends, making instagram stories, etc are cool, but they aren't essential. They should not be part of the MVP.
