@@ -1,12 +1,15 @@
 $(function () {
     M.AutoInit();
 
-    let $resultMessage = $("#resultMessage");
+    // let $resultMessage = $("#resultMessage");
     let $gBoxResult = $("#gBoxResult");
     let $resultMessage = $("#resultMessagegBox");
     let searchValue = [];
     let GBOX_API_KEY = "98abf308077c7e107fa86590d74feff3f6fb2ff8";
-    $resultMessage.hide();
+    let rTimeDisplay;
+    let rTime;
+    let mvID;
+    // $resultMessage.hide();
 
     // Form Submit, generate search results with the API Call
     $("#gboxForm").submit(function (event) {
@@ -34,7 +37,12 @@ $(function () {
                         .addClass("row")
                         .appendTo($gBoxResult);
 
-                    dataGBOX.results.forEach(dGbox => {
+                    //let dataResults = dataGBOX.results
+                    let dataResults = dataGBOX.results.sort(function (a, b) {
+                        return a.release_year - b.release_year
+                    }).reverse();
+
+                    dataResults.forEach(dGbox => {
 
                         let divCol = $("<div>")
                             .addClass("col s12	m12 l6 xl6")
@@ -73,9 +81,8 @@ $(function () {
                             .html(`Rating: <b>${dGbox.rating}</b>`)
                             .appendTo(cardContent);
 
-                        // Not working yet
-                        let runtimeDisplay = $("<p>")
-                            // .html(`Runtime: <b>${dOMDB.runtime}</b>`)
+                        let runtimeDisplay = $("<div>")
+                            .attr("data-runtime", dGbox.id)
                             .addClass(`runTime`)
                             .appendTo(cardContent);
 
@@ -136,6 +143,9 @@ $(function () {
                             })
                             .text("Streaming List!")
                             .appendTo(cardContent);
+
+                        //Call the function to display Runtime 
+                        rTimeDisplay = dOMDB(dGbox.title, dGbox.release_year, dGbox.id)
                     });
 
                 } else {
@@ -144,27 +154,31 @@ $(function () {
                         .addClass("redBold")
                         .appendTo($gBoxResult);
                 }
-
-                // Not working yet
-                //dOMDB(dGbox);
             })
     });
 
-    // OMDB API Call, needs to be achieved while each card creates itself so we can use the gBox.title and dGbox.release_year to grab the right runtime from OMDB. 
-    function dOMDB() {
-        $(".card-content").each(function () {
-            let _this = this;
-            // console.log($(this));
-            let omdbURL = "http://www.omdbapi.com/?t=" + dGbox.title + "&y=" + dGbox.release_year + "&APIkey=trilogy";
-            $.get({
-                url: omdbURL,
-                dataType: 'json',
-            })
-                .then(function (OMDBresponse) {
-                    let dOMDB = OMDBresponse;
-                    $(".runTime", _this).text(`Runtime: <b>${dOMDB.runtime}</b>`);
-                });
-        })
+    //Get the runtime 
+    function dOMDB(title, rYear, mvID) {
+        let omdbURL = "https://www.omdbapi.com/?t=" + title + "&y=" + rYear + "&APIkey=trilogy";
+        let runTimeDiv = $(`[data-runtime = ${mvID}]`);
+        let cardA = $(`[id = ${mvID}]`);
+
+        $.get(omdbURL)
+            .then(function (OMDBresponse) {
+                let dOMDB = OMDBresponse;
+                rTime = dOMDB.Runtime;
+                if (dOMDB.Response === "False") {
+
+                    let runTimeP = $("<p>")
+                        .html(`Runtime: <b>N/A</b > `)
+                        .appendTo(runTimeDiv);
+                } else {
+
+                    let runTimeP = $("<p>")
+                        .html(`Runtime: <b>${rTime}</b > `)
+                        .appendTo(runTimeDiv);
+                }
+            });
     }
 
     // Not working yet Trailer button API Call
@@ -179,6 +193,8 @@ $(function () {
             .then(function (mTrailer) {
                 // add the link in so its watchable.
                 // also add an if statement for if there is no trailer link for the user to watch. "something went wrong, trailer unavailable."
+                console.log(mTrailer);
+
             });
     });
 
@@ -187,8 +203,8 @@ $(function () {
         event.preventDefault();
         let $_this = $(this);
         let dataMovieID = $_this.attr("dataValue");
-        let cardA = $(`[id=${dataMovieID}]`);
-        let ulDrop = $(`[id=${dataMovieID}]`);
+        let cardA = $(`[id = ${dataMovieID}]`);
+        let ulDrop = $(`[id = ${dataMovieID}]`);
         let gboxMovieID = $(this).attr("dataValue");
         let gBoxStreamUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/?api_key=" + GBOX_API_KEY + "&sources=subscription";
         $.get({
