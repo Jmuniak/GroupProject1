@@ -37,7 +37,12 @@ $(function() {
                         .addClass("row")
                         .appendTo($gBoxResult);
 
-                    dataGBOX.results.forEach(dGbox => {
+                    //let dataResults = dataGBOX.results
+                    let dataResults = dataGBOX.results.sort(function(a, b) {
+                        return a.release_year - b.release_year
+                    }).reverse();
+
+                    dataResults.forEach(dGbox => {
 
                         let divCol = $("<div>")
                             .addClass("col s12	m12 l6 xl6")
@@ -139,6 +144,7 @@ $(function() {
                             .text("Streaming List!")
                             .appendTo(cardContent);
 
+                        //Call the function to display Runtime 
                         rTimeDisplay = dOMDB(dGbox.title, dGbox.release_year, dGbox.id)
                     });
 
@@ -187,6 +193,8 @@ $(function() {
             .then(function(mTrailer) {
                 // add the link in so its watchable.
                 // also add an if statement for if there is no trailer link for the user to watch. "something went wrong, trailer unavailable."
+                console.log(mTrailer);
+
             });
     });
 
