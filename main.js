@@ -186,6 +186,7 @@ $(function() {
         event.preventDefault();
         let gboxMovieID = $(this).attr("data-Value");
         let gBoxStreamUrl = "https://api-public.guidebox.com/v2/movies/" + gboxMovieID + "/?api_key=" + GBOX_API_KEY + "&sources=subscription";
+
         $.get({
                 url: gBoxStreamUrl,
                 dataType: 'json',
@@ -193,7 +194,22 @@ $(function() {
             .then(function(mTrailer) {
                 // add the link in so its watchable.
                 // also add an if statement for if there is no trailer link for the user to watch. "something went wrong, trailer unavailable."
-                console.log(mTrailer);
+                console.log(mTrailer.trailers.web);
+                let webTrailer = mTrailer.trailers.web;
+                if (webTrailer.length > 0) {
+
+                    webTrailer.forEach(function(trailer) {
+
+                        if (trailer.type === "Main Trailer") {
+                            console.log(trailer.embed);
+                        }
+                    })
+
+                    console.log("got trailer");
+                } else {
+
+                    console.log("No trailers");
+                }
 
             });
     });
